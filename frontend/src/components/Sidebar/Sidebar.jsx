@@ -4,12 +4,6 @@ import { NavLink } from "./Navlink";
 export function Sidebar({ route, setRoute }) {
   return (
     <div className="w-70 bg-gray-200 drop-shadow-2xl px-3 flex flex-col shrink-0">
-      <h1 className="text-3xl font-bold py-4">
-        <button className="cursor-pointer" onClick={() => setRoute("start")}>
-          Portal FE
-        </button>
-      </h1>
-      <hr />
       <ul className="py-3 flex-grow overflow-auto flex flex-col">
         <NavLink
           text={"Inicio"}
