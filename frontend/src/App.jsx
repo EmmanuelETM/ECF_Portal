@@ -1,4 +1,4 @@
-import { Sidebar } from "./components/Sidebar";
+import { Sidebar } from "./components/Sidebar/Sidebar";
 import StartPage from "./pages/Inidicadores";
 import EmisionPage from "./pages/Emision";
 import RecepcionPage from "./pages/Recepcion";

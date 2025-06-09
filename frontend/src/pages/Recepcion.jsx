@@ -19,10 +19,16 @@ export default function RecepcionPage() {
     tipo_ecf: "Todos",
   });
 
-  const [sortBy, setSortBy] = useState("fecha");
-  const [sortOrder, setSortOrder] = useState("desc");
-
-  console.log(sortOrder, sortBy);
+  const [sorts, setSorts] = useState([
+    {
+      key: "nombre",
+      direction: "asc",
+    },
+    {
+      key: "fecha",
+      direction: "desc",
+    },
+  ]);
 
   useEffect(() => {
     getRecibidos()
@@ -36,22 +42,29 @@ export default function RecepcionPage() {
   };
 
   const handleSort = (key) => {
-    if (sortBy === key) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortBy(key);
-      setSortOrder("asc");
-    }
+    setSorts((prevSorts) => {
+      const existing = prevSorts.find((s) => s.key === key);
+      if (existing) {
+        return prevSorts.map((s) =>
+          s.key === key
+            ? { ...s, direction: s.direction === "asc" ? "desc" : "asc" }
+            : s
+        );
+      } else {
+        return [...prevSorts, { key, direction: "asc" }];
+      }
+    });
   };
 
   const sortedData = [...data].sort((a, b) => {
-    const aValue = a[sortBy];
-    const bValue = b[sortBy];
-    if (sortOrder === "asc") {
-      return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-    } else {
-      return bValue < aValue ? -1 : bValue > aValue ? 1 : 0;
+    for (let sort of sorts) {
+      const aValue = a[sort.key];
+      const bValue = b[sort.key];
+
+      if (aValue < bValue) return sort.direction === "asc" ? -1 : 1;
+      if (aValue > bValue) return sort.direction === "asc" ? 1 : -1;
     }
+    return 0;
   });
 
   const handleLimpiarClick = () => {
@@ -123,12 +136,7 @@ export default function RecepcionPage() {
           <Button text="Limpiar" onClick={handleLimpiarClick} />
         </div>
       </div>
-      <Table
-        data={filteredData}
-        handleSort={handleSort}
-        sortBy={sortBy}
-        sortOrder={sortOrder}
-      />
+      <Table data={filteredData} handleSort={handleSort} sorts={sorts} />
     </div>
   );
 }
