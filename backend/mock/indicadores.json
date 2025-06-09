@@ -1,0 +1,64 @@
+{
+  "documentos": {
+    "Emitidos": "6,306",
+    "Recibidos": "8,813",
+    "Pendientes": "5",
+    "Rechazados": "7"
+  },
+  "montos": {
+    "Monto Total": "$22,339,376.60",
+    "ITBIS": "$3,407,701.52"
+  },
+  "PorTipoDeComprobante": [
+    {
+      "tipo": "Con Valor Fiscal",
+      "valor": "$347.00",
+      "itbis": "$52.93"
+    },
+    {
+      "tipo": "De consumo",
+      "valor": "$1,250.00",
+      "itbis": "$190.68"
+    },
+    {
+      "tipo": "Nota de Debito",
+      "valor": "$980.00",
+      "itbis": "$149.56"
+    },
+    {
+      "tipo": "Nota de Crédito",
+      "valor": "$1,100.00",
+      "itbis": "$167.80"
+    },
+    {
+      "tipo": "Compras",
+      "valor": "$5,400.00",
+      "itbis": "$823.73"
+    },
+    {
+      "tipo": "Gastos Menores",
+      "valor": "$675.00",
+      "itbis": "$102.98"
+    },
+    {
+      "tipo": "Regímene Especial",
+      "valor": "$2,200.00",
+      "itbis": "$335.25"
+    },
+    {
+      "tipo": "Gubernamental",
+      "valor": "$3,300.00",
+      "itbis": "$502.88"
+    },
+    {
+      "tipo": "Exportaciones",
+      "valor": "$4,150.00",
+      "itbis": "$633.47"
+    },
+    {
+      "tipo": "Pagos al Exterior",
+      "valor": "$347.00",
+      "itbis": "$52.93"
+    }
+  ]
+}

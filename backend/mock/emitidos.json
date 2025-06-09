@@ -1,0 +1,35 @@
+[
+    {
+        "eNCF": "E310000000001",
+        "Tipo": 31,
+        "RNCEmisor": "130902526",
+        "RazonSocialEmisor": "DOCUMENTOS ELECTRONICOS DE 02",
+        "RNCComprador": "130703051",
+        "RazonSocialComprador": "DOCUMENTOS ELECTRONICOS DE 03",
+        "FechaEmision": "01-04-2025",
+        "MontoTotal": 154003.47,
+        "Archivo": "130902526E310000000001.xml"
+    },
+    {
+        "eNCF": "E310000010040",
+        "Tipo": 31,
+        "RNCEmisor": "130902526",
+        "RazonSocialEmisor": "COSTILLITAS",
+        "RNCComprador": "140703051",
+        "RazonSocialComprador": "DOCUMENTOS ELECTRONICOS DE 03",
+        "FechaEmision": "01-04-2025",
+        "MontoTotal": 154003.47,
+        "Archivo": "130902526E310000010040.xml"
+    },
+    {
+        "eNCF": "E320000010043",
+        "Tipo": 32,
+        "RNCEmisor": "130902526",
+        "RazonSocialEmisor": "COSTILLITAS",
+        "RNCComprador": "120703051",
+        "RazonSocialComprador": "JUNTA ELECTRONICOS DE 03",
+        "FechaEmision": "01-04-2025",
+        "MontoTotal": 154003.47,
+        "Archivo": "130902526E320000010043.xml"
+    }
+]

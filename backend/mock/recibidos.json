@@ -1,0 +1,68 @@
+[
+    {
+        "eNCF": "E310000000001",
+        "Tipo": 31,
+        "RNCEmisor": "130902526",
+        "RazonSocialEmisor": "DOCUMENTOS ELECTRONICOS DE 02",
+        "RNCComprador": "130703051",
+        "RazonSocialComprador": "DOCUMENTOS ELECTRONICOS DE 03",
+        "FechaEmision": "01-04-2025",
+        "MontoTotal": 154003.47,
+        "Archivo": "130902526E310000000001.xml"
+    },
+    {
+        "eNCF": "E310000010043",
+        "Tipo": 31,
+        "RNCEmisor": "130902526",
+        "RazonSocialEmisor": "DOCUMENTOS ELECTRONICOS DE 02",
+        "RNCComprador": "130703051",
+        "RazonSocialComprador": "DOCUMENTOS ELECTRONICOS DE 03",
+        "FechaEmision": "01-04-2025",
+        "MontoTotal": 154003.47,
+        "Archivo": "130902526E310000010043.xml"
+    },
+    {
+        "eNCF": "E310000010044",
+        "Tipo": 31,
+        "RNCEmisor": "130902526",
+        "RazonSocialEmisor": "DOCUMENTOS ELECTRONICOS DE 02",
+        "RNCComprador": "130703051",
+        "RazonSocialComprador": "DOCUMENTOS ELECTRONICOS DE 03",
+        "FechaEmision": "01-04-2025",
+        "MontoTotal": 154003.47,
+        "Archivo": "130902526E310000010044.xml"
+    },
+    {
+        "eNCF": "E310000020003",
+        "Tipo": 31,
+        "RNCEmisor": "130902526",
+        "RazonSocialEmisor": "DOCUMENTOS ELECTRONICOS DE 02",
+        "RNCComprador": "130703051",
+        "RazonSocialComprador": "DOCUMENTOS ELECTRONICOS DE 03",
+        "FechaEmision": "01-04-2025",
+        "MontoTotal": 154003.47,
+        "Archivo": "130902526E310000020003.xml"
+    },
+    {
+        "eNCF": "E310000020004",
+        "Tipo": 31,
+        "RNCEmisor": "130902526",
+        "RazonSocialEmisor": "DOCUMENTOS ELECTRONICOS DE 02",
+        "RNCComprador": "130703051",
+        "RazonSocialComprador": "DOCUMENTOS ELECTRONICOS DE 03",
+        "FechaEmision": "01-04-2025",
+        "MontoTotal": 154003.47,
+        "Archivo": "130902526E310000020004.xml"
+    },
+    {
+        "eNCF": "E310000020005",
+        "Tipo": 31,
+        "RNCEmisor": "130902526",
+        "RazonSocialEmisor": "DOCUMENTOS ELECTRONICOS DE 02",
+        "RNCComprador": "130703051",
+        "RazonSocialComprador": "DOCUMENTOS ELECTRONICOS DE 03",
+        "FechaEmision": "01-04-2025",
+        "MontoTotal": 154003.47,
+        "Archivo": "130902526E310000020005.xml"
+    }
+]
