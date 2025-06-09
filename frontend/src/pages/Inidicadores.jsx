@@ -8,6 +8,7 @@ export default function StartPage() {
         <div className="grid grid-cols-3 gap-2">
           <Indicator value={3} label={"Emitidos"} />
           <Indicator value={3} label={"Recibidos"} />
+          <Indicator value={3} label={"Recibidos"} />
         </div>
       </div>
 
