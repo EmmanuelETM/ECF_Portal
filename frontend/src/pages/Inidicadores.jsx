@@ -1,24 +1,103 @@
+import { useEffect, useState } from "react";
 import { Indicator } from "../components/Indicator";
+import {
+  Send,
+  CheckCheck,
+  CircleDot,
+  Ban,
+  DollarSign,
+  CircleDollarSign,
+} from "lucide-react";
+import axios from "axios";
+
+const getData = async () => {
+  try {
+    const response = await axios.get("http://localhost:5174/indicadores");
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 export default function StartPage() {
-  return (
-    <div id="inicio">
-      <div id="cantidad" className="flex flex-col gap-3">
-        <h4 className="text-2xl font-semibold mb-2">Documentos procesados</h4>
-        <div className="grid grid-cols-3 gap-2">
-          <Indicator value={3} label={"Emitidos"} />
-          <Indicator value={3} label={"Recibidos"} />
-          <Indicator value={3} label={"Recibidos"} />
-        </div>
-      </div>
+  const [data, setData] = useState([]);
+  const { montos, documentos, PorTipoDeComprobante } = data;
 
-      <div id="montos" className="flex flex-col gap-3 mt-8">
-        <h4 className="text-2xl font-semibold mb-2">Montos procesados</h4>
-        <div className="grid grid-cols-3 gap-2">
-          <Indicator value={"$1250.00"} label={"Monto Total"} />
-          <Indicator value={"$225.00"} label={"ITBIS"} />
+  useEffect(() => {
+    const fetchData = () => {
+      getData()
+        .then((data) => setData(data))
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    fetchData();
+  }, []);
+
+  return (
+    <div>
+      {documentos && (
+        <div className="flex flex-col gap-3">
+          <h4 className="text-2xl font-semibold mb-2">Documentos procesados</h4>
+          <div className="grid grid-cols-2 grid-rows-2 sm:grid-cols-4 sm:grid-rows-1 gap-4">
+            <Indicator
+              value={documentos.Emitidos}
+              title={"Emitidos"}
+              Icon={Send}
+            />
+            <Indicator
+              value={documentos.Recibidos}
+              title={"Recibidos"}
+              Icon={CheckCheck}
+            />
+            <Indicator
+              value={documentos.Pendientes}
+              title={"Pendientes"}
+              Icon={CircleDot}
+            />
+            <Indicator
+              value={documentos.Rechazados}
+              title={"Rechazados"}
+              Icon={Ban}
+            />
+          </div>
         </div>
-      </div>
+      )}
+
+      {montos && (
+        <div className="flex flex-col gap-3 mt-8">
+          <h4 className="text-2xl font-semibold mb-2">Montos procesados</h4>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Indicator
+              value={montos.MontoTotal}
+              title={"Monto Total"}
+              Icon={DollarSign}
+            />
+            <Indicator
+              value={montos.ITBIS}
+              title={"ITBIS"}
+              Icon={CircleDollarSign}
+            />
+          </div>
+        </div>
+      )}
+
+      {PorTipoDeComprobante && (
+        <div className="flex flex-col gap-3 mt-8">
+          <h4 className="text-2xl font-semibold mb-2">
+            Por Tipo de Comprobante
+          </h4>
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+            {PorTipoDeComprobante.map((item) => (
+              <Indicator
+                value={item.valor}
+                title={item.tipo}
+                subtitle={item.itbis}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

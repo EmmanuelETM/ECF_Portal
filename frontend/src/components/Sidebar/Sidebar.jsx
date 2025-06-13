@@ -54,7 +54,7 @@ export function Sidebar({
       >
         {/* Top bar with collapse button */}
         <div className="px-4 pt-4 text-xl font-semibold text-gray-600 flex items-center justify-between">
-          {!sidebarCollapsed && <span>Pages</span>}
+          {!sidebarCollapsed && <span>Dashboard</span>}
           <button
             className="hover:bg-gray-300 rounded-lg p-1 sm:block hidden"
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}

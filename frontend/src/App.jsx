@@ -21,7 +21,7 @@ function App() {
   return (
     <div>
       <Navbar setRoute={setRoute} setSidebarOpen={setSidebarOpen} />
-      <div className="h-dvh flex">
+      <div className="h-screen flex">
         <Sidebar
           route={route}
           setRoute={setRoute}
@@ -30,7 +30,7 @@ function App() {
           sidebarCollapsed={sidebarCollapsed}
           setSidebarCollapsed={setSidebarCollapsed}
         />
-        <div className="flex-1 flex flex-col pt-5 px-4 mt-3">
+        <div className="flex-1 flex flex-col pt-5 px-4 mt-3 mx-3">
           {ROUTES[route] ?? <StartPage />}
         </div>
       </div>

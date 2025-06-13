@@ -6,8 +6,12 @@ import { tipos_ecf } from "../lib/tipos_ecf";
 import { filterData } from "../lib/processData";
 
 const getRecibidos = async () => {
-  const response = await axios.get("http://localhost:5174/recepcion");
-  return response.data;
+  try {
+    const response = await axios.get("http://localhost:5174/recepcion");
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export default function RecepcionPage() {

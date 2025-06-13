@@ -6,8 +6,12 @@ import { tipos_ecf } from "../lib/tipos_ecf";
 import { filterData } from "../lib/processData";
 
 const getEmitidos = async () => {
-  const response = await axios.get("http://localhost:5174/emision");
-  return response.data;
+  try {
+    const response = await axios.get("http://localhost:5174/emision");
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export default function RecepcionPage() {
@@ -33,6 +37,8 @@ export default function RecepcionPage() {
     fetchData();
   }, []);
 
+  console.log(data);
+
   const handleRefreshClick = async () => {
     const data = await getEmitidos();
     setData(data);
@@ -50,7 +56,6 @@ export default function RecepcionPage() {
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
-    console.log(filters);
   };
 
   const filteredData = useMemo(() => {
