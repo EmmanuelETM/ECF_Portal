@@ -1,7 +1,7 @@
 const sortData = (data, sortOrder) => {
   return [...data].sort((a, b) => {
-    const aFecha = a["fecha"];
-    const bFecha = b["fecha"];
+    const aFecha = a["FechaEmision"];
+    const bFecha = b["FechaEmision"];
 
     if (sortOrder === "asc") {
       return aFecha < bFecha ? -1 : aFecha > bFecha ? 1 : 0;
@@ -11,21 +11,21 @@ const sortData = (data, sortOrder) => {
   });
 };
 
-export const filterData = (data, sortOrder, filters) => {
+export const filterData = (data, sortOrder, filters, { RNC, Razon }) => {
   const sortedData = sortData(data, sortOrder);
 
   return sortedData.filter((item) => {
-    const matchEcf =
-      !filters.ecf ||
-      item.nombre.toLowerCase().includes(filters.ecf.toLowerCase());
-    const matchRnc = !filters.rnc || item.rnc.toString().includes(filters.rnc);
+    const matcheNCF =
+      !filters.eNCF ||
+      item.eNCF.toLowerCase().includes(filters.eNCF.toLowerCase());
+    const matchRNC = !filters.RNC || item[RNC].toString().includes(filters.RNC);
     const matchRazon =
-      !filters.razon ||
-      item.razon.toLowerCase().includes(filters.razon.toLowerCase());
-    const matchTipoEcf =
-      !filters.tipo_ecf || filters.tipo_ecf === "Todos"
+      !filters.Razon ||
+      item[Razon].toLowerCase().includes(filters.Razon.toLowerCase());
+    const matchTipo =
+      !filters.Tipo || filters.Tipo === "Todos"
         ? true
-        : item.tipo_ecf.toLowerCase() === filters.tipo_ecf.toLowerCase();
-    return matchEcf && matchRnc && matchRazon && matchTipoEcf;
+        : item.Tipo.toString() === filters.Tipo.toString();
+    return matcheNCF && matchRNC && matchRazon && matchTipo;
   });
 };

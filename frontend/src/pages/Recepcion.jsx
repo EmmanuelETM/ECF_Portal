@@ -6,17 +6,17 @@ import { tipos_ecf } from "../lib/tipos_ecf";
 import { filterData } from "../lib/processData";
 
 const getRecibidos = async () => {
-  const response = await axios.get("http://localhost:5174");
+  const response = await axios.get("http://localhost:5174/recepcion");
   return response.data;
 };
 
 export default function RecepcionPage() {
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState({
-    ecf: "",
-    rnc: "",
-    razon: "",
-    tipo_ecf: "Todos",
+    eNCF: "",
+    RNC: "",
+    Razon: "",
+    Tipo: "Todos",
   });
 
   const [sortOrder, setSortOrder] = useState("desc");
@@ -40,10 +40,10 @@ export default function RecepcionPage() {
 
   const handleLimpiarClick = () => {
     setFilters({
-      ecf: "",
-      rnc: "",
-      razon: "",
-      tipo_ecf: "Todos",
+      eNCF: "",
+      RNC: "",
+      Razon: "",
+      Tipo: "Todos",
     });
   };
 
@@ -53,7 +53,10 @@ export default function RecepcionPage() {
   };
 
   const filteredData = useMemo(() => {
-    return filterData(data, sortOrder, filters);
+    return filterData(data, sortOrder, filters, {
+      RNC: "RNCEmisor",
+      Razon: "RazonSocialEmisor",
+    });
   }, [data, sortOrder, filters]);
 
   return (
@@ -63,42 +66,40 @@ export default function RecepcionPage() {
       <div className="max-w-4xl">
         <div className="flex flex-row flex-wrap gap-2 items-baseline">
           <input
-            name="ecf"
+            name="eNCF"
             className="flex-1 min-w-[150px] border border-gray-400 rounded-xl p-2"
-            placeholder="eCF"
+            placeholder="eNCF"
             type="text"
-            data-col={0}
-            value={filters.ecf}
+            value={filters.eNCF}
             onChange={handleFilterChange}
           />
           <input
-            name="rnc"
+            name="RNC"
             className="flex-1 min-w-[150px] border border-gray-400 rounded-lg p-2"
             placeholder="RNC"
             type="text"
-            data-col={5}
-            value={filters.rnc}
+            value={filters.RNC}
             onChange={handleFilterChange}
           />
           <input
-            name="razon"
+            name="Razon"
             className="flex-1 min-w-[150px] border border-gray-400 rounded-lg p-2"
             placeholder="Razon Social"
             type="text"
-            data-col={6}
-            value={filters.razon}
+            value={filters.Razon}
             onChange={handleFilterChange}
           />
           <select
             className="border border-gray-400 p-2 rounded-lg"
-            name="tipo_ecf"
-            value={filters.tipo_ecf}
-            data-col={3}
+            name="Tipo"
+            value={filters.Tipo}
             onChange={handleFilterChange}
           >
             <option>Todos</option>
             {tipos_ecf.map((tipo) => (
-              <option key={tipo.id}>{tipo.nombre}</option>
+              <option key={tipo.id} value={tipo.id}>
+                {tipo.nombre}
+              </option>
             ))}
           </select>
         </div>
@@ -111,6 +112,7 @@ export default function RecepcionPage() {
         data={filteredData}
         sortOrder={sortOrder}
         setSortOrder={setSortOrder}
+        view={"recepcion"}
       />
     </div>
   );

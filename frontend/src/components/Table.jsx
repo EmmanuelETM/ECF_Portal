@@ -1,11 +1,12 @@
 import { ArrowUp, ArrowDown } from "lucide-react";
 
-export default function Table({ data, sortOrder, setSortOrder }) {
+export default function Table({ data, sortOrder, setSortOrder, view }) {
   return (
     <table className="w-full border-spacing-0 rounded-xl overflow-hidden text-center">
       <thead>
         <tr className="bg-green-600 text-white">
-          <th className="p-3 font-semibold">Nombre</th>
+          <th className="p-3 font-semibold">eNCF</th>
+          <th className="p-3 font-semibold">Nombre del Archivo</th>
           <th
             className="py-3 px-5 font-semibold cursor-pointer"
             onClick={() => {
@@ -19,9 +20,14 @@ export default function Table({ data, sortOrder, setSortOrder }) {
           </th>
           <th className="p-3 font-semibold">Monto Total</th>
           <th className="p-3 font-semibold hidden">Tipo</th>
-          <th className="p-3 font-semibold hidden">Tipo eCF</th>
-          <th className="p-3 font-semibold">RNC</th>
-          <th className="p-3 font-semibold">Razon Social</th>
+          <th className="p-3 font-semibold">
+            {view === "emision" ? "RNC Comprador" : "RNC Emisor"}
+          </th>
+          <th className="p-3 font-semibold">
+            {view === "emision"
+              ? "Razon Social Comprador"
+              : "Razon Social Emisor"}
+          </th>
           <th className="p-3 font-semibold">Acciones</th>
         </tr>
       </thead>
@@ -30,13 +36,19 @@ export default function Table({ data, sortOrder, setSortOrder }) {
           data.map((row, index) => {
             return (
               <tr key={index}>
-                <td className="p-3">{row.nombre}</td>
-                <td className="p-3">{row.fecha}</td>
-                <td className="p-3">${row.monto}</td>
-                <td className="p-3 hidden">{row.tipo}</td>
-                <td className="p-3 hidden">{row.tipo_ecf}</td>
-                <td className="p-3">{row.rnc}</td>
-                <td className="p-3">{row.razon}</td>
+                <td className="p-3">{row.eNCF}</td>
+                <td className="p-3">{row.Archivo}</td>
+                <td className="p-3">{row.FechaEmision}</td>
+                <td className="p-3">${row.MontoTotal}</td>
+                <td className="p-3 hidden">{row.Tipo}</td>
+                <td className="p-3">
+                  {view === "emision" ? row.RNCComprador : row.RNCEmisor}
+                </td>
+                <td className="p-3">
+                  {view === "emision"
+                    ? row.RazonSocialComprador
+                    : row.RazonSocialEmisor}
+                </td>
                 <td className="p-3">
                   <button className="cursor-pointer hover:text-blue-600 hover:underline">
                     Action
