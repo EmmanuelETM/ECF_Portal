@@ -34,7 +34,6 @@ export function Sidebar({
 
   return (
     <>
-      {/* Mobile Overlay */}
       <div
         className={`fixed inset-0 bg-black/50 z-20 transition-opacity sm:hidden ${
           sidebarOpen
@@ -44,7 +43,6 @@ export function Sidebar({
         onClick={() => setSidebarOpen(false)}
       />
 
-      {/* Sidebar container */}
       <div
         className={`
           fixed sm:static top-0 left-0 h-full z-30 bg-gray-200 drop-shadow-2xl transition-all duration-200
@@ -52,7 +50,6 @@ export function Sidebar({
           ${sidebarCollapsed ? "w-16" : "w-64"} sm:flex flex-col
         `}
       >
-        {/* Top bar with collapse button */}
         <div className="px-4 pt-4 text-xl font-semibold text-gray-600 flex items-center justify-between">
           {!sidebarCollapsed && <span>Dashboard</span>}
           <button

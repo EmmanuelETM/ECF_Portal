@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Indicator } from "../components/Indicator";
+
 import {
   Send,
   CheckCheck,
@@ -7,7 +8,11 @@ import {
   Ban,
   DollarSign,
   CircleDollarSign,
+  CalendarArrowDown,
 } from "lucide-react";
+
+import { DropdownButton } from "../components/Dropdown/DropDown";
+
 import axios from "axios";
 
 const getData = async () => {
@@ -34,11 +39,31 @@ export default function StartPage() {
     fetchData();
   }, []);
 
+  const handleSelect = (value) => {
+    console.log("Selected:", value);
+  };
+
   return (
     <div>
       {documentos && (
         <div className="flex flex-col gap-3">
-          <h4 className="text-2xl font-semibold mb-2">Documentos procesados</h4>
+          <div className="flex items-center justify-between">
+            <h4 className="text-2xl font-semibold mb-2">
+              Documentos procesados
+            </h4>
+            <DropdownButton
+              options={[
+                { label: "Hoy", value: "profile" },
+                { label: "Ayer", value: "settings" },
+                { label: "Esta Semana", value: "logout" },
+                { label: "Esta Mes", value: "logout" },
+                { label: "Esta Año", value: "logout" },
+                { label: "Todos", value: "logout" },
+              ]}
+              onSelect={handleSelect}
+            />
+          </div>
+
           <div className="grid grid-cols-2 grid-rows-2 sm:grid-cols-4 sm:grid-rows-1 gap-4">
             <Indicator
               value={documentos.Emitidos}
@@ -88,8 +113,9 @@ export default function StartPage() {
             Por Tipo de Comprobante
           </h4>
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
-            {PorTipoDeComprobante.map((item) => (
+            {PorTipoDeComprobante.map((item, index) => (
               <Indicator
+                key={index}
                 value={item.valor}
                 title={item.tipo}
                 subtitle={item.itbis}

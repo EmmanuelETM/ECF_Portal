@@ -30,7 +30,7 @@ function App() {
           sidebarCollapsed={sidebarCollapsed}
           setSidebarCollapsed={setSidebarCollapsed}
         />
-        <div className="flex-1 flex flex-col pt-5 px-4 mt-3 mx-3">
+        <div className="flex-1 flex flex-col pt-5 px-4 mx-3">
           {ROUTES[route] ?? <StartPage />}
         </div>
       </div>

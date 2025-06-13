@@ -37,8 +37,6 @@ export default function RecepcionPage() {
     fetchData();
   }, []);
 
-  console.log(data);
-
   const handleRefreshClick = async () => {
     const data = await getEmitidos();
     setData(data);
