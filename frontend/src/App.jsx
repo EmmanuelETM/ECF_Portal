@@ -15,12 +15,21 @@ function App() {
   };
 
   const [route, setRoute] = useState("start");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
     <div>
-      <Navbar setRoute={setRoute} />
+      <Navbar setRoute={setRoute} setSidebarOpen={setSidebarOpen} />
       <div className="h-dvh flex">
-        <Sidebar route={route} setRoute={setRoute} />
+        <Sidebar
+          route={route}
+          setRoute={setRoute}
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+          sidebarCollapsed={sidebarCollapsed}
+          setSidebarCollapsed={setSidebarCollapsed}
+        />
         <div className="flex-1 flex flex-col pt-5 px-4 mt-3">
           {ROUTES[route] ?? <StartPage />}
         </div>

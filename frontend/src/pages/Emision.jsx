@@ -20,10 +20,14 @@ export default function EmisionPage() {
   });
 
   useEffect(() => {
-    getEmitidos()
-      .then((data) => setData(data))
-      .catch((err) => console.log(err));
-  }, [data]);
+    const fetchData = () => {
+      getEmitidos()
+        .then((data) => setData(data))
+        .catch((err) => console.log(err));
+    };
+
+    fetchData();
+  }, []);
 
   const handleRefreshClick = async () => {
     const data = await getEmitidos();

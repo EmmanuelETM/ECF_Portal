@@ -20,10 +20,16 @@ export default function RecepcionPage() {
   });
 
   useEffect(() => {
-    getRecibidos()
-      .then((data) => setData(data))
-      .catch((err) => console.log(err));
-  }, [data]);
+    const fetchData = () => {
+      getRecibidos()
+        .then((data) => setData(data))
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+    fetchData();
+  }, []);
 
   const handleRefreshClick = async () => {
     const data = await getRecibidos();
