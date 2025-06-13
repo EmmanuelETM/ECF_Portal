@@ -7,7 +7,7 @@ export function Navbar({ setRoute, setSidebarOpen }) {
       <div className="bg-green-600">
         <div className="flex-col flex">
           <div className="w-full border-b-2 border-gray-200">
-            <div className="bg-lime-600 h-16 justify-between items-center mx-auto px-4 flex">
+            <div className="bg-green-600 h-16 justify-between items-center mx-auto px-4 flex">
               <div className="text-3xl font-bold py-4 flex items-center justify-center gap-3">
                 <button
                   className="sm:hidden text-white pt-1"

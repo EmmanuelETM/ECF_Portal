@@ -1,4 +1,4 @@
-const sortData = (sortOrder, data) => {
+const sortData = (data, sortOrder) => {
   return [...data].sort((a, b) => {
     const aFecha = a["fecha"];
     const bFecha = b["fecha"];
@@ -12,7 +12,7 @@ const sortData = (sortOrder, data) => {
 };
 
 export const filterData = (data, sortOrder, filters) => {
-  const sortedData = sortData(sortOrder, data);
+  const sortedData = sortData(data, sortOrder);
 
   return sortedData.filter((item) => {
     const matchEcf =

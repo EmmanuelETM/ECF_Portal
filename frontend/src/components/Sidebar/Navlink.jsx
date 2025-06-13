@@ -4,7 +4,7 @@ export function NavLink({ text, Icon, onClick, isActive, isCollapsed }) {
       {!isCollapsed ? (
         <li
           className={`py-2 px-3 mx-2 rounded-xl cursor-pointer text-md flex items-center gap-3 ${
-            isActive ? "bg-lime-600 text-white" : ""
+            isActive ? "bg-green-600 text-white" : ""
           }`}
           onClick={onClick}
         >
@@ -14,7 +14,7 @@ export function NavLink({ text, Icon, onClick, isActive, isCollapsed }) {
       ) : (
         <li
           className={`p-2 rounded-xl mx-2 cursor-pointer flex justify-center items-center ${
-            isActive ? "bg-lime-600 text-white" : ""
+            isActive ? "bg-greeb-600 text-white" : ""
           }`}
           onClick={onClick}
         >
