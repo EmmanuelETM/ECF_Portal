@@ -1,12 +1,22 @@
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUp, ArrowDown } from "lucide-react";
 
-export default function Table({ data }) {
+export default function Table({ data, sortOrder, setSortOrder }) {
   return (
     <table className="w-full border-spacing-0 rounded-xl overflow-hidden text-center">
       <thead>
         <tr className="bg-lime-600 text-white">
           <th className="p-3 font-semibold">Nombre</th>
-          <th className="py-3 px-5 font-semibold">Fecha</th>
+          <th
+            className="py-3 px-5 font-semibold cursor-pointer"
+            onClick={() => {
+              if (sortOrder === "asc") setSortOrder("desc");
+              else setSortOrder("asc");
+            }}
+          >
+            <div className="flex gap-2 justify-center items-center">
+              Fecha {sortOrder === "asc" ? <ArrowUp /> : <ArrowDown />}
+            </div>
+          </th>
           <th className="p-3 font-semibold">Monto Total</th>
           <th className="p-3 font-semibold hidden">Tipo</th>
           <th className="p-3 font-semibold hidden">Tipo eCF</th>

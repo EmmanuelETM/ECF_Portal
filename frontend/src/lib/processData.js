@@ -1,5 +1,20 @@
-export const filterData = (data, filters) => {
-  return data.filter((item) => {
+const sortData = (sortOrder, data) => {
+  return [...data].sort((a, b) => {
+    const aFecha = a["fecha"];
+    const bFecha = b["fecha"];
+
+    if (sortOrder === "asc") {
+      return aFecha < bFecha ? -1 : aFecha > bFecha ? 1 : 0;
+    } else {
+      return bFecha < aFecha ? -1 : bFecha > aFecha ? 1 : 0;
+    }
+  });
+};
+
+export const filterData = (data, sortOrder, filters) => {
+  const sortedData = sortData(sortOrder, data);
+
+  return sortedData.filter((item) => {
     const matchEcf =
       !filters.ecf ||
       item.nombre.toLowerCase().includes(filters.ecf.toLowerCase());

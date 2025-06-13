@@ -3,7 +3,7 @@ import Table from "../components/Table";
 import axios from "axios";
 import { useState, useMemo, useEffect } from "react";
 import { tipos_ecf } from "../lib/tipos_ecf";
-import { filterData } from "../lib/filterData";
+import { filterData } from "../lib/processData";
 
 const getRecibidos = async () => {
   const response = await axios.get("http://localhost:5174");
@@ -18,6 +18,8 @@ export default function RecepcionPage() {
     razon: "",
     tipo_ecf: "Todos",
   });
+
+  const [sortOrder, setSortOrder] = useState("desc");
 
   useEffect(() => {
     const fetchData = () => {
@@ -50,16 +52,9 @@ export default function RecepcionPage() {
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
-  const sortedData = [...data].sort((a, b) => {
-    const aFecha = a["fecha"];
-    const bFecha = b["fecha"];
-
-    return bFecha < aFecha ? -1 : bFecha > aFecha ? 1 : 0;
-  });
-
   const filteredData = useMemo(() => {
-    return filterData(sortedData, filters);
-  }, [sortedData, filters]);
+    return filterData(data, sortOrder, filters);
+  }, [data, sortOrder, filters]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -112,7 +107,11 @@ export default function RecepcionPage() {
           <Button text="Limpiar" onClick={handleLimpiarClick} />
         </div>
       </div>
-      <Table data={filteredData} />
+      <Table
+        data={filteredData}
+        sortOrder={sortOrder}
+        setSortOrder={setSortOrder}
+      />
     </div>
   );
 }
