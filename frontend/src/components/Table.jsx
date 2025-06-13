@@ -1,34 +1,12 @@
 import { ArrowUpDown } from "lucide-react";
 
-export default function Table({ data, handleSort, sorts }) {
+export default function Table({ data }) {
   return (
     <table className="w-full border-spacing-0 rounded-xl overflow-hidden">
       <thead>
         <tr className="bg-green-600 text-white">
-          <th
-            className="p-3 text-left font-semibold cursor-pointer"
-            onClick={() => handleSort("nombre")}
-          >
-            <div className="flex gap-2">
-              Nombre{" "}
-              {sorts.find((s) => s.key === "nombre") &&
-                (sorts.find((s) => s.key === "nombre").direction === "asc"
-                  ? "↑"
-                  : "↓")}
-            </div>
-          </th>
-          <th
-            className="py-3 px-5 text-left font-semibold cursor-pointer"
-            onClick={() => handleSort("fecha")}
-          >
-            <div className="flex gap-2">
-              Fecha{" "}
-              {sorts.find((s) => s.key === "fecha") &&
-                (sorts.find((s) => s.key === "fecha").direction === "asc"
-                  ? "↑"
-                  : "↓")}
-            </div>
-          </th>
+          <th className="p-3 text-left font-semibold">Nombre</th>
+          <th className="py-3 px-5 text-left font-semibold">Fecha</th>
           <th className="p-3 text-left font-semibold">Monto Total</th>
           <th className="p-3 text-left font-semibold">Tipo</th>
           <th className="p-3 text-left font-semibold">Tipo eCF</th>

@@ -16,11 +16,7 @@ export function Navbar({ setRoute }) {
               </h1>
               <div className="md:space-x-6 justify-end items-center ml-auto flex space-x-3">
                 <div className="justify-center items-center flex relative">
-                  <img
-                    src=""
-                    className="object-cover btn- h-9 w-9 rounded-full mr-2 bg-gray-300"
-                    alt=""
-                  />
+                  <img className="object-cover btn- h-9 w-9 rounded-full mr-2 bg-gray-300" />
                   <p className="font-semibold text-sm">User Here</p>
                 </div>
               </div>

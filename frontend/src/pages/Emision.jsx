@@ -19,48 +19,11 @@ export default function EmisionPage() {
     tipo_ecf: "Todos",
   });
 
-  const [sorts, setSorts] = useState([
-    {
-      key: "nombre",
-      direction: "asc",
-    },
-    {
-      key: "fecha",
-      direction: "desc",
-    },
-  ]);
-
   useEffect(() => {
     getEmitidos()
       .then((data) => setData(data))
       .catch((err) => console.log(err));
   }, [data]);
-
-  const handleSort = (key) => {
-    setSorts((prevSorts) => {
-      const existing = prevSorts.find((s) => s.key === key);
-      if (existing) {
-        return prevSorts.map((s) =>
-          s.key === key
-            ? { ...s, direction: s.direction === "asc" ? "desc" : "asc" }
-            : s
-        );
-      } else {
-        return [...prevSorts, { key, direction: "asc" }];
-      }
-    });
-  };
-
-  const sortedData = [...data].sort((a, b) => {
-    for (let sort of sorts) {
-      const aValue = a[sort.key];
-      const bValue = b[sort.key];
-
-      if (aValue < bValue) return sort.direction === "asc" ? -1 : 1;
-      if (aValue > bValue) return sort.direction === "asc" ? 1 : -1;
-    }
-    return 0;
-  });
 
   const handleRefreshClick = async () => {
     const data = await getEmitidos();
@@ -80,6 +43,13 @@ export default function EmisionPage() {
     const { name, value } = event.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
+
+  const sortedData = [...data].sort((a, b) => {
+    const aFecha = a["fecha"];
+    const bFecha = b["fecha"];
+
+    return bFecha < aFecha ? -1 : bFecha > aFecha ? 1 : 0;
+  });
 
   const filteredData = useMemo(() => {
     return filterData(sortedData, filters);
@@ -136,7 +106,7 @@ export default function EmisionPage() {
           <Button text="Limpiar" onClick={handleLimpiarClick} />
         </div>
       </div>
-      <Table data={filteredData} handleSort={handleSort} sorts={sorts} />
+      <Table data={filteredData} />
     </div>
   );
 }
