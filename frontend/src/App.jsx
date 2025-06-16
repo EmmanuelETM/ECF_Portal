@@ -32,7 +32,7 @@ function App() {
           setSidebarCollapsed={setSidebarCollapsed}
         />
 
-        <main className="flex-1 min-w-0 overflow-auto px-8 pt-4">
+        <main className="flex-1 min-w-0 px-8 pt-4 overflow-y-auto">
           {ROUTES[route] ?? <StartPage />}
         </main>
       </div>

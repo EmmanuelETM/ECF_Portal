@@ -8,7 +8,7 @@ export function NavLink({ text, Icon, onClick, isActive, isCollapsed }) {
           }`}
           onClick={onClick}
         >
-          {Icon && <Icon size={20} />}
+          {Icon && <Icon size={24} />}
           {text}
         </li>
       ) : (
@@ -18,7 +18,7 @@ export function NavLink({ text, Icon, onClick, isActive, isCollapsed }) {
           }`}
           onClick={onClick}
         >
-          {Icon && <Icon size={20} />}
+          {Icon && <Icon size={24} />}
         </li>
       )}
     </>

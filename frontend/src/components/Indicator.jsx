@@ -10,7 +10,7 @@ export function Indicator({ value, title, subtitle, Icon }) {
       </div>
 
       {/* Main Value */}
-      <span className="truncate text-xl md:text-2xl lg:text-3xl font-semibold text-black leading-snug">
+      <span className="truncate text-xl md:text-2xl lg:text-3xl font-semibold leading-snug">
         {value}
       </span>
 
