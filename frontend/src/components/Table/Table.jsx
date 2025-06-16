@@ -1,7 +1,7 @@
 import { ArrowUp, ArrowDown } from "lucide-react";
 import { Actions } from "./Actions";
 
-export default function Table({ data, sortOrder, setSortOrder, view }) {
+export function Table({ data, sortOrder, setSortOrder, view }) {
   return (
     <div className="overflow-x-auto">
       <table className="w-full border-spacing-0 rounded-xl overflow-hidden text-center">

@@ -1,8 +1,8 @@
 import { Sidebar } from "./components/Sidebar/Sidebar";
-import StartPage from "./pages/Start";
-import EmisionPage from "./pages/Emision";
-import RecepcionPage from "./pages/Recepcion";
-import ConfigPage from "./pages/Configuracion";
+import StartPage from "./pages/StartPage";
+import EmisionPage from "./pages/EmisionPage";
+import RecepcionPage from "./pages/RecepcionPage";
+import ConfigPage from "./pages/ConfiguracionPage";
 import { useState } from "react";
 import { Navbar } from "./components/Navbar";
 

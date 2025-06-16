@@ -1,19 +1,10 @@
 import { Button } from "../components/Button";
-import Table from "../components/Table/Table";
-import axios from "axios";
+import { Table } from "../components/Table/Table";
 import { useState, useMemo, useEffect } from "react";
 import { filterData } from "../lib/processData";
 import { Filters } from "../components/Table/Filters";
 import { DateRange } from "../components/Table/DateRange";
-
-const getEmitidos = async () => {
-  try {
-    const response = await axios.get("http://localhost:5174/emision");
-    return response.data;
-  } catch (err) {
-    console.log(err);
-  }
-};
+import { getEmitidos } from "../data/query";
 
 export default function RecepcionPage() {
   const [data, setData] = useState([]);

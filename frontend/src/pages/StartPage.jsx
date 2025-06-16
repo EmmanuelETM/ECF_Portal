@@ -12,16 +12,27 @@ import {
 
 import { DropdownButton } from "../components/Dropdown/DropDown";
 
-import axios from "axios";
+import {
+  LastYear,
+  ThisMonth,
+  ThisWeek,
+  ThisYear,
+  Today,
+  Yesterday,
+} from "../lib/date-helper";
 
-const getData = async () => {
-  try {
-    const response = await axios.get("http://localhost:5174/indicadores");
-    return response.data;
-  } catch (err) {
-    console.log(err);
-  }
-};
+import { getIndicadores } from "../data/query";
+
+// const getDateRangedData = async (from, to) => {
+//   try {
+//     const response = await axios.get(
+//       `http://localhost:5174/indicadores?from=${from}&to=${to}`
+//     );
+//     return response.data;
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
 
 export default function StartPage() {
   const [data, setData] = useState([]);
@@ -29,7 +40,7 @@ export default function StartPage() {
 
   useEffect(() => {
     const fetchData = () => {
-      getData()
+      getIndicadores()
         .then((data) => setData(data))
         .catch((err) => {
           console.log(err);
@@ -38,31 +49,38 @@ export default function StartPage() {
     fetchData();
   }, []);
 
-  const handleSelect = (fn) => {
-    console.log("Selected:", fn);
+  const handleSelect = async (fn) => {
+    const result = await fn();
+
+    if (result.from && result.to) {
+      const { from, to } = result;
+      console.log(from, to);
+      // const response = await getDateRangedData(from, to);
+      // console.log(response);
+    } else {
+      setData(result);
+    }
   };
 
   return (
     <div>
-      {documentos && (
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center justify-between">
-            <h4 className="text-2xl font-semibold mb-2">
-              Documentos procesados
-            </h4>
-            <DropdownButton
-              options={[
-                { label: "Hoy", fn: "" },
-                { label: "Ayer", fn: "" },
-                { label: "Esta Semana", fn: "" },
-                { label: "Este Mes", fn: "" },
-                { label: "Este Año", fn: "" },
-                { label: "Todos", fn: "" },
-              ]}
-              onSelect={handleSelect}
-            />
-          </div>
-
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center justify-between">
+          <h4 className="text-2xl font-semibold mb-2">Documentos procesados</h4>
+          <DropdownButton
+            options={[
+              { label: "Hoy", fn: Today },
+              { label: "Ayer", fn: Yesterday },
+              { label: "Esta Semana", fn: ThisWeek },
+              { label: "Este Mes", fn: ThisMonth },
+              { label: "Este Año", fn: ThisYear },
+              { label: "Año Pasado", fn: LastYear },
+              { label: "Todos", fn: getIndicadores },
+            ]}
+            onSelect={handleSelect}
+          />
+        </div>
+        {documentos && (
           <div className="grid grid-cols-2 grid-rows-2 md:grid-cols-4 sm:grid-rows-1 gap-4">
             <Indicator
               value={documentos.Emitidos}
@@ -85,12 +103,12 @@ export default function StartPage() {
               Icon={Ban}
             />
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
-      {montos && (
-        <div className="flex flex-col gap-3 mt-8">
-          <h4 className="text-2xl font-semibold mb-2">Montos procesados</h4>
+      <div className="flex flex-col gap-3 mt-8">
+        <h4 className="text-2xl font-semibold mb-2">Montos procesados</h4>
+        {montos && (
           <div className="grid md:grid-cols-2 gap-4">
             <Indicator
               value={montos.MontoTotal}
@@ -103,14 +121,12 @@ export default function StartPage() {
               Icon={CircleDollarSign}
             />
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
-      {PorTipoDeComprobante && (
-        <div className="flex flex-col gap-3 mt-8">
-          <h4 className="text-2xl font-semibold mb-2">
-            Por Tipo de Comprobante
-          </h4>
+      <div className="flex flex-col gap-3 mt-8">
+        <h4 className="text-2xl font-semibold mb-2">Por Tipo de Comprobante</h4>
+        {PorTipoDeComprobante && (
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
             {PorTipoDeComprobante.map((item, index) => (
               <Indicator
@@ -121,8 +137,8 @@ export default function StartPage() {
               />
             ))}
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
