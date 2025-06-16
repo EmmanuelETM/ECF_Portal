@@ -64,7 +64,7 @@ export default function StartPage() {
             />
           </div>
 
-          <div className="grid grid-cols-2 grid-rows-2 sm:grid-cols-4 sm:grid-rows-1 gap-4">
+          <div className="grid grid-cols-2 grid-rows-2 md:grid-cols-4 sm:grid-rows-1 gap-4">
             <Indicator
               value={documentos.Emitidos}
               title={"Emitidos"}
@@ -92,7 +92,7 @@ export default function StartPage() {
       {montos && (
         <div className="flex flex-col gap-3 mt-8">
           <h4 className="text-2xl font-semibold mb-2">Montos procesados</h4>
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 gap-4">
             <Indicator
               value={montos.MontoTotal}
               title={"Monto Total"}
@@ -112,7 +112,7 @@ export default function StartPage() {
           <h4 className="text-2xl font-semibold mb-2">
             Por Tipo de Comprobante
           </h4>
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
             {PorTipoDeComprobante.map((item, index) => (
               <Indicator
                 key={index}

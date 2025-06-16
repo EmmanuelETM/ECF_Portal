@@ -1,5 +1,5 @@
 import { Sidebar } from "./components/Sidebar/Sidebar";
-import StartPage from "./pages/Inidicadores";
+import StartPage from "./pages/Start";
 import EmisionPage from "./pages/Emision";
 import RecepcionPage from "./pages/Recepcion";
 import ConfigPage from "./pages/Configuracion";
@@ -19,9 +19,10 @@ function App() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
-    <div>
+    <div className="h-screen flex flex-col overflow-hidden">
       <Navbar setRoute={setRoute} setSidebarOpen={setSidebarOpen} />
-      <div className="h-screen flex">
+
+      <div className="flex flex-1 overflow-hidden">
         <Sidebar
           route={route}
           setRoute={setRoute}
@@ -30,9 +31,10 @@ function App() {
           sidebarCollapsed={sidebarCollapsed}
           setSidebarCollapsed={setSidebarCollapsed}
         />
-        <div className="flex-1 flex flex-col pt-5 px-4 mx-3">
+
+        <main className="flex-1 min-w-0 overflow-auto px-8 pt-4">
           {ROUTES[route] ?? <StartPage />}
-        </div>
+        </main>
       </div>
     </div>
   );
