@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { ReceiptText, X } from "lucide-react";
 
-export function XMLDialog() {
+export function XMLDialog({ archivo }) {
   const dialogRef = useRef(null);
 
   const openDialog = () => {
@@ -28,7 +28,7 @@ export function XMLDialog() {
       >
         <div className="flex flex-col gap-4">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold">XML Dialog</h2>
+            <h2 className="text-xl font-semibold">{archivo}</h2>
             <button
               className="text-gray-500 hover:text-black"
               onClick={closeDialog}
@@ -36,7 +36,7 @@ export function XMLDialog() {
               <X />
             </button>
           </div>
-          <div className="w-full h-full bg-stone-300 border border-stone-500 rounded-lg overflow-auto">
+          <div className="bg-stone-300 border border-stone-500 rounded-lg overflow-auto">
             idk, i just got here
           </div>
         </div>

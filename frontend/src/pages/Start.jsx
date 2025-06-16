@@ -52,12 +52,12 @@ export default function StartPage() {
             </h4>
             <DropdownButton
               options={[
-                { label: "Hoy", value: "profile" },
-                { label: "Ayer", value: "settings" },
-                { label: "Esta Semana", value: "logout" },
-                { label: "Esta Mes", value: "logout" },
-                { label: "Esta Año", value: "logout" },
-                { label: "Todos", value: "logout" },
+                { label: "Hoy", value: "Hoy", fn: "" },
+                { label: "Ayer", value: "Ayer", fn: "" },
+                { label: "Esta Semana", value: "Esta Semana", fn: "" },
+                { label: "Este Mes", value: "Este Mes", fn: "" },
+                { label: "Este Año", value: "Este Año", fn: "" },
+                { label: "Todos", value: "Todos", fn: "" },
               ]}
               onSelect={handleSelect}
             />

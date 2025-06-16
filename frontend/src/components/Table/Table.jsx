@@ -52,7 +52,7 @@ export default function Table({ data, sortOrder, setSortOrder, view }) {
                       : row.RazonSocialEmisor}
                   </td>
                   <td className="p-3">
-                    <Actions />
+                    <Actions archivo={row.Archivo} />
                   </td>
                 </tr>
               );
