@@ -1,26 +1,16 @@
 export function NavLink({ text, Icon, onClick, isActive, isCollapsed }) {
   return (
-    <>
-      {!isCollapsed ? (
-        <li
-          className={`py-2 px-3 mx-2 rounded-xl cursor-pointer text-md flex items-center gap-3 ${
-            isActive ? "bg-green-600 text-white" : ""
-          }`}
-          onClick={onClick}
-        >
-          {Icon && <Icon size={24} />}
-          {text}
-        </li>
-      ) : (
-        <li
-          className={`p-2 rounded-xl mx-2 cursor-pointer flex justify-center items-center ${
-            isActive ? "bg-green-600 text-white" : ""
-          }`}
-          onClick={onClick}
-        >
-          {Icon && <Icon size={24} />}
-        </li>
-      )}
-    </>
+    <li
+      className={`group cursor-pointer flex items-center transition-colors duration-200 
+        ${isCollapsed ? "justify-center px-0" : "justify-start px-3"} 
+        ${isActive ? "bg-green-600 text-white" : "text-gray-700 hover:bg-gray-200"} 
+        py-2 rounded-lg`}
+      onClick={onClick}
+    >
+      <div className="min-w-[24px] flex justify-center items-center">
+        {Icon && <Icon size={20} />}
+      </div>
+      {!isCollapsed && <span className="ml-3 text-sm font-medium">{text}</span>}
+    </li>
   );
 }

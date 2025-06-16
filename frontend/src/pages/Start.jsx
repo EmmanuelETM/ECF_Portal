@@ -38,8 +38,8 @@ export default function StartPage() {
     fetchData();
   }, []);
 
-  const handleSelect = (value) => {
-    console.log("Selected:", value);
+  const handleSelect = (fn) => {
+    console.log("Selected:", fn);
   };
 
   return (
@@ -52,12 +52,12 @@ export default function StartPage() {
             </h4>
             <DropdownButton
               options={[
-                { label: "Hoy", value: "Hoy", fn: "" },
-                { label: "Ayer", value: "Ayer", fn: "" },
-                { label: "Esta Semana", value: "Esta Semana", fn: "" },
-                { label: "Este Mes", value: "Este Mes", fn: "" },
-                { label: "Este Año", value: "Este Año", fn: "" },
-                { label: "Todos", value: "Todos", fn: "" },
+                { label: "Hoy", fn: "" },
+                { label: "Ayer", fn: "" },
+                { label: "Esta Semana", fn: "" },
+                { label: "Este Mes", fn: "" },
+                { label: "Este Año", fn: "" },
+                { label: "Todos", fn: "" },
               ]}
               onSelect={handleSelect}
             />
