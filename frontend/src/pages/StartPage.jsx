@@ -23,17 +23,6 @@ import {
 
 import { getIndicadores } from "../data/query";
 
-// const getDateRangedData = async (from, to) => {
-//   try {
-//     const response = await axios.get(
-//       `http://localhost:5174/indicadores?from=${from}&to=${to}`
-//     );
-//     return response.data;
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
-
 export default function StartPage() {
   const [data, setData] = useState([]);
   const { montos, documentos, PorTipoDeComprobante } = data;
@@ -55,7 +44,7 @@ export default function StartPage() {
     if (result.from && result.to) {
       const { from, to } = result;
       console.log(from, to);
-      // const response = await getDateRangedData(from, to);
+      // const response = await getIndicadores(from, to);
       // console.log(response);
     } else {
       setData(result);

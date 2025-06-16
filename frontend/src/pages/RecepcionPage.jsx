@@ -53,8 +53,9 @@ export default function RecepcionPage() {
   return (
     <div className="flex flex-col gap-6 px-4">
       <p className="text-2xl font-semibold">Recepción de Documentos</p>
-      <DateRange />
-      <div className="max-w-6xl w-full">
+
+      <div className="flex flex-col gap-2 max-w-6xl w-full">
+        <DateRange />
         <Filters filters={filters} setFilters={setFilters} />
 
         <div className="flex items-center gap-4 mt-4">

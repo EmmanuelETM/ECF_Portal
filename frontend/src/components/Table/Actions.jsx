@@ -6,8 +6,8 @@ export function Actions({ archivo }) {
   return (
     <div className="flex gap-2 items-center justify-center">
       <XMLDialog archivo={archivo} />
-      <SendDialog />
-      <LogDialog />
+      <SendDialog archivo={archivo} />
+      <LogDialog archivo={archivo} />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import {
+  formatISO,
   startOfToday,
   endOfToday,
   startOfYesterday,
@@ -14,42 +15,56 @@ import {
 
 export function Today() {
   return {
-    from: startOfToday().toString(),
-    to: endOfToday().toString(),
+    from: formatISO(startOfToday(), { representation: "date" }).toString(),
+    to: formatISO(endOfToday(), { representation: "date" }).toString(),
   };
 }
 
 export function Yesterday() {
   return {
-    from: startOfYesterday().toString(),
-    to: endOfYesterday().toString(),
+    from: formatISO(startOfYesterday(), { representation: "date" }).toString(),
+    to: formatISO(endOfYesterday(), { representation: "date" }).toString(),
   };
 }
 
 export function ThisWeek() {
   return {
-    from: startOfWeek(new Date()).toString(),
-    to: endOfWeek(new Date()).toString(),
+    from: formatISO(startOfWeek(new Date()), {
+      representation: "date",
+    }).toString(),
+    to: formatISO(endOfWeek(new Date()), {
+      representation: "date",
+    }).toString(),
   };
 }
 
 export function ThisMonth() {
   return {
-    from: startOfMonth(new Date()).toString(),
-    to: endOfMonth(new Date()).toString(),
+    from: formatISO(startOfMonth(new Date()), {
+      representation: "date",
+    }).toString(),
+    to: formatISO(endOfMonth(new Date()), {
+      representation: "date",
+    }).toString(),
   };
 }
 
 export function ThisYear() {
   return {
-    from: startOfYear(new Date()).toString(),
-    to: endOfYear(new Date()).toString(),
+    from: formatISO(startOfYear(new Date()), {
+      representation: "date",
+    }).toString(),
+    to: formatISO(endOfYear(new Date()), { representation: "date" }).toString(),
   };
 }
 
 export function LastYear() {
   return {
-    from: subYears(startOfYear(new Date()), 1).toString(),
-    to: subYears(endOfYear(new Date()), 1).toString(),
+    from: formatISO(subYears(startOfYear(new Date()), 1), {
+      representation: "date",
+    }).toString(),
+    to: formatISO(subYears(endOfYear(new Date()), 1), {
+      representation: "date",
+    }).toString(),
   };
 }

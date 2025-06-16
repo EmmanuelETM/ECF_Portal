@@ -1,7 +1,7 @@
 import { useRef } from "react";
-import { FileChartColumn, X } from "lucide-react";
+import { File, X } from "lucide-react";
 
-export function LogDialog() {
+export function LogDialog({ archivo }) {
   const dialogRef = useRef(null);
 
   const openDialog = () => {
@@ -15,29 +15,33 @@ export function LogDialog() {
   return (
     <>
       <button
-        className="cursor-pointer p-2 rounded-lg text-yellow-500 border border-yellow-500 hover:bg-yellow-500 hover:text-black"
+        className="cursor-pointer p-2 rounded-lg text-yellow-600 border border-yellow-600 hover:bg-yellow-600 hover:text-white"
         onClick={openDialog}
       >
-        <FileChartColumn />
+        <File size={20} />
       </button>
 
       <dialog
         ref={dialogRef}
-        className="rounded-lg p-6 w-[60%] h-[70%] max-w-full max-h-full backdrop:backdrop-blur-sm border fixed inset-0 m-auto"
+        className="rounded-lg w-[90%] max-w-5xl h-[80vh] backdrop:backdrop-blur-sm border p-0"
+        style={{ inset: 0, margin: "auto" }}
         onClose={closeDialog}
       >
-        <div className="flex flex-col gap-4">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold">XML Dialog</h2>
+        <div className="flex flex-col h-full bg-white rounded-lg overflow-hidden">
+          <div className="flex justify-between items-center px-6 py-4">
+            <h2 className="text-xl font-semibold truncate">{archivo}</h2>
             <button
               className="text-gray-500 hover:text-black"
               onClick={closeDialog}
             >
-              <X />
+              <X size={20} />
             </button>
           </div>
-          <div className="w-full h-full bg-stone-300 border border-stone-500 rounded-lg overflow-auto">
-            idk, i just got here
+
+          <div className="flex-1 p-4 overflow-auto bg-stone-200 border text-left border-stone-400 rounded-md mx-4 mb-4">
+            <pre className="whitespace-pre-wrap break-words">
+              idk, I just got here
+            </pre>
           </div>
         </div>
       </dialog>
