@@ -8,7 +8,6 @@ class EmisionController {
 
   static async getXml(req, res) {
     const { doc } = req.params;
-
     const response = await EmisionModel.getXml({ doc });
 
     if (response.error) {
@@ -16,7 +15,7 @@ class EmisionController {
     }
 
     res.setHeader("Content-Type", "application/xml");
-    return res.send(response.data);
+    return res.end(response.data);
   }
 }
 

@@ -8,6 +8,7 @@ import RecepcionRouter from "./routes/recepcion.js";
 const PORT = process.env.PORT ?? 5174;
 
 const app = express();
+app.disable("x-powered-by");
 app.use(corsMiddleware());
 app.use(express.json());
 

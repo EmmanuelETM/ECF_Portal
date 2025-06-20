@@ -14,7 +14,7 @@ function App() {
     config: <ConfigPage />,
   };
 
-  const [route, setRoute] = useState("start");
+  const [route, setRoute] = useState("emision");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 

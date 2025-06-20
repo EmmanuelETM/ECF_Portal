@@ -1,8 +1,12 @@
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { readJson } from "../readJson.js";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const emitidos = readJson("./models/mock/emitidos.json");
+const _dirname = dirname(fileURLToPath(import.meta.url));
+
+const emitidos = readJson(join(_dirname, "mock/emitidos.json"));
 
 class EmisionModel {
   static async getAll() {
@@ -10,7 +14,7 @@ class EmisionModel {
   }
 
   static async getXml({ doc }) {
-    const path = `./mock/xml/${doc}`;
+    const path = join(_dirname, "mock", "xml", doc);
     const exists = existsSync(path);
 
     if (!exists) {

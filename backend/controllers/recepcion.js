@@ -9,7 +9,7 @@ class RecepcionController {
   static async getXml(req, res) {
     const { doc } = req.params;
 
-    const response = await EmisionModel.getXml({ doc });
+    const response = await RecepcionModel.getXml({ doc });
 
     if (response.error) {
       return res.status(response.status).json({ message: response.error });
