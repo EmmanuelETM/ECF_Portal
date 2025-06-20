@@ -34,7 +34,7 @@ export function highlightXML(xml) {
   return escaped
     .replace(
       /(\w+)="(.*?)"/g,
-      '<span class="attr">$1</span>="<span class="value">$2</span>"'
+      '<span class="text-green-700">$1</span>="<span class="text-blue-700">$2</span>"'
     )
-    .replace(/(&lt;\/?)(\w+)/g, '$1<span class="tag">$2</span>');
+    .replace(/(&lt;\/?)(\w+)/g, '$1<span class="text-red-800">$2</span>');
 }
