@@ -13,6 +13,20 @@ import {
   subYears,
 } from "date-fns";
 
+export function getToday() {
+  const date = new Date();
+
+  const locale = date
+    .toLocaleDateString("es-Do", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    })
+    .split("/");
+
+  return `${locale[2]}-${locale[1]}-${locale[0]}`;
+}
+
 export function Today() {
   return {
     from: formatISO(startOfToday(), { representation: "date" }).toString(),

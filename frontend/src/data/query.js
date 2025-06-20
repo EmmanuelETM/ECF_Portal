@@ -1,5 +1,7 @@
 import axios from "axios";
 
+export const API_PATH = "http://localhost:5174";
+
 export async function getRecibidos(from, to) {
   const endpoint = new URL("http://localhost:5174/recepcion");
   if (from) endpoint.searchParams.append("FechaEmisionDesde", from);

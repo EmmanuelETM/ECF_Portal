@@ -21,7 +21,7 @@ import {
   Yesterday,
 } from "../lib/date-helper";
 
-import { getIndicadores } from "../data/query";
+import { API_PATH, getIndicadores } from "../data/query";
 
 export default function StartPage() {
   const [data, setData] = useState([]);
@@ -54,8 +54,8 @@ export default function StartPage() {
   return (
     <div>
       <div className="flex flex-col gap-3">
-        <div className="flex items-center justify-between">
-          <h4 className="text-2xl font-semibold mb-2">Documentos procesados</h4>
+        <div className="flex items-center justify-between mb-4">
+          <h4 className="text-2xl font-semibold">Documentos procesados</h4>
           <DropdownButton
             options={[
               { label: "Hoy", fn: Today },

@@ -1,17 +1,26 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { File, X } from "lucide-react";
 
-export function LogDialog({ archivo }) {
+export function LogDialog({ archivo, view }) {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (open && view === "emision") {
+      console.log("somshi");
+    }
+  }, [open, view]);
+
   const dialogRef = useRef(null);
 
   const openDialog = () => {
     dialogRef.current?.showModal();
+    setOpen(true);
   };
 
   const closeDialog = () => {
     dialogRef.current?.close();
+    setOpen(false);
   };
-
   return (
     <>
       <button

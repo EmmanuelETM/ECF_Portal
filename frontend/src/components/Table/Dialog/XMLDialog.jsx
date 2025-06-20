@@ -1,15 +1,29 @@
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { ReceiptText, X } from "lucide-react";
 
-export function XMLDialog({ archivo }) {
+export function XMLDialog({ archivo, view }) {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (open && view === "emision") {
+      console.log("someshit");
+    }
+
+    if (open && view === "recepcion") {
+      console.log("someshit received");
+    }
+  }, [open, view]);
+
   const dialogRef = useRef(null);
 
   const openDialog = () => {
     dialogRef.current?.showModal();
+    setOpen(true);
   };
 
   const closeDialog = () => {
     dialogRef.current?.close();
+    setOpen(false);
   };
 
   return (
@@ -41,6 +55,7 @@ export function XMLDialog({ archivo }) {
           <div className="flex-1 p-4 overflow-auto bg-stone-200 border text-left border-stone-400 rounded-md mx-4 mb-4">
             <pre className="whitespace-pre-wrap break-words">
               idk, I just got here
+              {archivo}
             </pre>
           </div>
         </div>

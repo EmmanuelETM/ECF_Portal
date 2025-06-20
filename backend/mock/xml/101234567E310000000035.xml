@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ECF>
+  <Encabezado>
+    <Version>1</Version>
+    <IdDoc>
+      <TipoeCF>31</TipoeCF>
+      <ENCF>E310000000035</ENCF>
+      <FechaVencimientoSecuencia>2025-12-31</FechaVencimientoSecuencia>
+      <IndicadorMontoGravado>1</IndicadorMontoGravado>
+      <TipoIngresos>1</TipoIngresos>
+      <TipoPago>2</TipoPago>
+    </IdDoc>
+    <Emisor>
+      <RNCEmisor>101234567</RNCEmisor>
+      <RazonSocialEmisor>Comercial Tech SRL</RazonSocialEmisor>
+      <DireccionEmisor>Av. Bolívar #45, Santo Domingo</DireccionEmisor>
+      <TablaTelefonoEmisor>
+        <TelefonoEmisor>809-555-1234</TelefonoEmisor>
+        <TelefonoEmisor>829-000-4567</TelefonoEmisor>
+      </TablaTelefonoEmisor>
+    </Emisor>
+    <Comprador>
+      <RNCComprador>102345678</RNCComprador>
+      <RazonSocialComprador>Distribuidora Gómez SRL</RazonSocialComprador>
+    </Comprador>
+    <Totales>
+      <MontoGravadoTotal>5000.00</MontoGravadoTotal>
+      <ITBIS>18</ITBIS>
+      <TotalITBIS>900.00</TotalITBIS>
+      <ImpuestosAdicionales>
+        <ImpuestoAdicional>
+          <Tipo>ISC</Tipo>
+          <TasaAdicional>10</TasaAdicional>
+        </ImpuestoAdicional>
+        <ImpuestoAdicional>
+          <Tipo>Otros</Tipo>
+          <OtrosAdicionales>100.00</OtrosAdicionales>
+        </ImpuestoAdicional>
+      </ImpuestosAdicionales>
+    </Totales>
+  </Encabezado>
+  <DetallesItems>
+    <Item>
+      <Nombre>Laptop Lenovo</Nombre>
+      <IndicadorBienoServicio>1</IndicadorBienoServicio>
+      <Cantidad>2</Cantidad>
+      <PrecioUnitario>750.00</PrecioUnitario>
+      <MontoItem>1500.00</MontoItem>
+      <ImpuestosAdicionales>
+        <ImpuestoAdicional>
+          <Tipo>IVA</Tipo>
+          <TasaAdicional>18</TasaAdicional>
+        </ImpuestoAdicional>
+        <ImpuestoAdicional>
+          <Tipo>ISC</Tipo>
+          <OtrosAdicionales>25.00</OtrosAdicionales>
+        </ImpuestoAdicional>
+      </ImpuestosAdicionales>
+    </Item>
+    <Item>
+      <Nombre>Consulta Dermatológica</Nombre>
+      <IndicadorBienoServicio>2</IndicadorBienoServicio>
+      <Cantidad>1</Cantidad>
+      <PrecioUnitario>1200.00</PrecioUnitario>
+      <MontoItem>1200.00</MontoItem>
+      <ImpuestosAdicionales>
+        <ImpuestoAdicional>
+          <Tipo>ITBIS</Tipo>
+          <TasaAdicional>16</TasaAdicional>
+        </ImpuestoAdicional>
+      </ImpuestosAdicionales>
+    </Item>
+    <Item>
+      <Nombre>Mouse Inalámbrico</Nombre>
+      <IndicadorBienoServicio>1</IndicadorBienoServicio>
+      <Cantidad>3</Cantidad>
+      <PrecioUnitario>25.99</PrecioUnitario>
+      <MontoItem>77.97</MontoItem>
+      <ImpuestosAdicionales>
+        <ImpuestoAdicional>
+          <Tipo>IVA</Tipo>
+          <TasaAdicional>18</TasaAdicional>
+        </ImpuestoAdicional>
+      </ImpuestosAdicionales>
+    </Item>
+    <Item>
+      <Nombre>Asesoría Técnica</Nombre>
+      <IndicadorBienoServicio>2</IndicadorBienoServicio>
+      <Cantidad>5</Cantidad>
+      <PrecioUnitario>200.00</PrecioUnitario>
+      <MontoItem>1000.00</MontoItem>
+      <ImpuestosAdicionales>
+        <ImpuestoAdicional>
+          <Tipo>Servicio</Tipo>
+          <OtrosAdicionales>50.00</OtrosAdicionales>
+        </ImpuestoAdicional>
+      </ImpuestosAdicionales>
+    </Item>
+    <Item>
+      <Nombre>Escritorio de Oficina</Nombre>
+      <IndicadorBienoServicio>1</IndicadorBienoServicio>
+      <Cantidad>1</Cantidad>
+      <PrecioUnitario>150.00</PrecioUnitario>
+      <MontoItem>150.00</MontoItem>
+      <ImpuestosAdicionales>
+        <ImpuestoAdicional>
+          <Tipo>IVA</Tipo>
+          <TasaAdicional>18</TasaAdicional>
+        </ImpuestoAdicional>
+        <ImpuestoAdicional>
+          <Tipo>EcoTasa</Tipo>
+          <OtrosAdicionales>5.00</OtrosAdicionales>
+        </ImpuestoAdicional>
+      </ImpuestosAdicionales>
+    </Item>
+    <Item>
+      <Nombre>Escritorio de Oficina</Nombre>
+      <IndicadorBienoServicio>1</IndicadorBienoServicio>
+      <Cantidad>5</Cantidad>
+      <PrecioUnitario>150.00</PrecioUnitario>
+      <MontoItem>750.00</MontoItem>
+    </Item>
+  </DetallesItems>
+</ECF>
