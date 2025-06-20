@@ -1,18 +1,21 @@
 import { useRef, useEffect, useState } from "react";
 import { ReceiptText, X } from "lucide-react";
+import { getXml } from "../../../data/query";
+import { formatXml, highlightXML } from "../../../lib/utils";
 
 export function XMLDialog({ archivo, view }) {
   const [open, setOpen] = useState(false);
+  const [file, setFile] = useState("");
 
   useEffect(() => {
-    if (open && view === "emision") {
-      console.log("someshit");
+    if (open) {
+      getXml(view, archivo)
+        .then((file) => {
+          setFile(highlightXML(formatXml(file)));
+        })
+        .catch((err) => console.log(err));
     }
-
-    if (open && view === "recepcion") {
-      console.log("someshit received");
-    }
-  }, [open, view]);
+  }, [open, archivo, view]);
 
   const dialogRef = useRef(null);
 
@@ -53,11 +56,19 @@ export function XMLDialog({ archivo, view }) {
           </div>
 
           <div className="flex-1 p-4 overflow-auto bg-stone-200 border text-left border-stone-400 rounded-md mx-4 mb-4">
-            <pre className="whitespace-pre-wrap break-words">
-              idk, I just got here
-              {archivo}
-            </pre>
+            <pre
+              className="whitespace-pre break-words font-mono text-sm sm:text-base"
+              dangerouslySetInnerHTML={{ __html: file }}
+            />
           </div>
+
+          {file && (
+            <div className="w-full flex justify-end p-2 ">
+              <button className="bg-blue-600 text-white rounded-lg cursor-pointer p-2">
+                click me
+              </button>
+            </div>
+          )}
         </div>
       </dialog>
     </>

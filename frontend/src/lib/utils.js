@@ -19,7 +19,6 @@ export function formatXml(xml) {
       indent = 0;
     } else if (node.match(/^<\/\w/)) {
       if (pad !== 0) pad -= 1;
-      //   else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
     } else if (node.match(/^<\w[^>]*[^/]>.*$/)) {
       indent = 1;
     } else {
@@ -44,9 +43,9 @@ export function highlightXML(xml) {
   return escaped
     .replace(
       /(\w+)="(.*?)"/g,
-      '<span class="attr">$1</span>="<span class="value">$2</span>"'
+      '<span class="text-green-700">$1</span>="<span class="text-blue-700">$2</span>"'
     )
-    .replace(/(&lt;\/?)(\w+)/g, '$1<span class="tag">$2</span>');
+    .replace(/(&lt;\/?)(\w+)/g, '$1<span class="text-red-800">$2</span>');
 }
 
 export async function getcontent(file) {
@@ -73,64 +72,6 @@ export async function getcontent(file) {
 //     const file = `http://localhost/local/api/ecf/${folder}/${name}`;
 //     const txt = await getcontent(file);
 //     modalBody.innerHTML = `<pre id="memo">${txt}</pre></br><Button onClick="DescargarXML()">Descargar</Button>`;
-// }
-
-// export function showActions(doc) {
-//     showModal(doc);
-//     const ecf = doc.replace(/\.xml$/, '');
-//     const btnEnviarDGIIECF = document.createElement('button');
-//     btnEnviarDGIIECF.textContent = 'Enviar ECF a DGII';
-//     btnEnviarDGIIECF.className = 'btn btn-dark d-block w-100 mb-2';
-//     btnEnviarDGIIECF.onclick = () => {
-//         enviarDGIIECF(ecf);
-//     };
-//     const btnEnviarDGIIAC = document.createElement('button');
-//     btnEnviarDGIIAC.textContent = 'Enviar ACECF a DGII';
-//     btnEnviarDGIIAC.className = 'btn btn-dark d-block w-100 mb-2';
-//     btnEnviarDGIIAC.onclick = () => {
-//         enviarDGIIAC(ecf);
-//     };
-//     const btnEnviarClienteECF = document.createElement('button');
-//     btnEnviarClienteECF.textContent = 'Enviar ECF al Cliente';
-//     btnEnviarClienteECF.className = 'btn btn-dark d-block w-100 mb-2';
-//     btnEnviarClienteECF.onclick = () => {
-//         enviarClienteECF(ecf);
-//     };
-//     const btnEnviarClienteAC = document.createElement('button');
-//     btnEnviarClienteAC.textContent = 'Enviar ACECF al Cliente';
-//     btnEnviarClienteAC.className = 'btn btn-dark d-block w-100 mb-2';
-//     btnEnviarClienteAC.onclick = () => {
-//         enviarClienteAC(ecf);
-//     };
-//     modalBody.innerHTML = '';
-//     modalBody.appendChild(btnEnviarDGIIECF);
-//     modalBody.appendChild(btnEnviarDGIIAC);
-//     modalBody.appendChild(btnEnviarClienteECF);
-//     modalBody.appendChild(btnEnviarClienteAC);
-// }
-
-// export function enviarDGIIECF(ecf) {
-//     fetch(`http://localhost/local/api/ecf/envio/dgii/ecf/${ecf}`, {
-//         method: "POST"
-//     })
-// }
-
-// export function enviarDGIIAC(ecf) {
-//     fetch(`http://localhost/local/api/ecf/envio/dgii/ac/${ecf}`, {
-//         method: "POST"
-//     })
-// }
-
-// export function enviarClienteECF(ecf) {
-//     fetch(`http://localhost/local/api/ecf/envio/cliente/ecf/${ecf}`, {
-//         method: "POST"
-//     })
-// }
-
-// export function enviarClienteAC(ecf) {
-//     fetch(`http://localhost/local/api/ecf/envio/cliente/ac/${ecf}`, {
-//         method: "POST"
-//     })
 // }
 
 // export function DescargarXML() {

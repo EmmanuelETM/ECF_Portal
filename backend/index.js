@@ -50,7 +50,20 @@ app.get("/recepcion", (req, res) => {
 
 app.get("/recepcion/:doc", (req, res) => {
   const { doc } = req.params;
-  res.json(recibidos);
+
+  const exists = fs.existsSync(`./mock/xml/${doc}`);
+
+  if (!exists)
+    return res.status(404).json({ message: "XML document not found" });
+
+  fs.readFile(`./mock/xml/${doc}`, (err, data) => {
+    if (err) {
+      return res.status(500).json({ message: "Something went wrong" });
+    }
+    if (data) {
+      return res.end(data);
+    }
+  });
 });
 
 app.use((req, res) => {
