@@ -1,16 +1,14 @@
-const express = require("express");
-const cors = require("cors");
-const fs = require("node:fs");
-const path = require("node:path");
+import express from "express";
+import corsMiddleware from "./middlewares/cors.js";
 
-const indicadores = require("./mock/indicadores.json");
-const emitidos = require("./mock/emitidos.json");
-const recibidos = require("./mock/recibidos.json");
+import IndicadoresRouter from "./routes/indicadores.js";
+import EmisionRouter from "./routes/emision.js";
+import RecepcionRouter from "./routes/recepcion.js";
 
 const PORT = process.env.PORT ?? 5174;
 
 const app = express();
-app.use(cors());
+app.use(corsMiddleware());
 app.use(express.json());
 
 app.use((req, _, next) => {
@@ -18,55 +16,11 @@ app.use((req, _, next) => {
   next();
 });
 
-app.get("/indicadores", (req, res) => {
-  res.json(indicadores);
-});
+app.use("/indicadores", IndicadoresRouter);
+app.use("/emision", EmisionRouter);
+app.use("/recepcion", RecepcionRouter);
 
-app.get("/emision", (req, res) => {
-  res.json(emitidos);
-});
-
-app.get("/emision/:doc", async (req, res) => {
-  const { doc } = req.params;
-
-  const exists = fs.existsSync(`./mock/xml/${doc}`);
-
-  if (!exists)
-    return res.status(404).json({ message: "XML document not found" });
-
-  fs.readFile(`./mock/xml/${doc}`, (err, data) => {
-    if (err) {
-      return res.status(500).json({ message: "Something went wrong" });
-    }
-    if (data) {
-      return res.end(data);
-    }
-  });
-});
-
-app.get("/recepcion", (req, res) => {
-  res.json(recibidos);
-});
-
-app.get("/recepcion/:doc", (req, res) => {
-  const { doc } = req.params;
-
-  const exists = fs.existsSync(`./mock/xml/${doc}`);
-
-  if (!exists)
-    return res.status(404).json({ message: "XML document not found" });
-
-  fs.readFile(`./mock/xml/${doc}`, (err, data) => {
-    if (err) {
-      return res.status(500).json({ message: "Something went wrong" });
-    }
-    if (data) {
-      return res.end(data);
-    }
-  });
-});
-
-app.use((req, res) => {
+app.use((_, res) => {
   return res.status(404).json({ message: "Not found" });
 });
 
