@@ -54,36 +54,3 @@ export async function getcontent(file) {
   const txt = await res.text();
   return txt;
 }
-
-// export async function showxml(doc, folder) {
-//     showModal(doc);
-//     modalBody.innerHTML = '<pre id="memo"></pre>';
-//     const file = `http://localhost/local/api/ecf/${folder}/${doc}`;
-//     const xml = await getcontent(file);
-//     const xmlF = highlightXML(formatXml(xml))
-//     modalBody.innerHTML = `<pre id="memo">${xmlF}</pre></br><Button onClick="DescargarXML()">Descargar</Button>`;
-// }
-
-// export async function showlog(doc) {
-//     const name = doc.replace(/\.xml$/, '.log');
-//     showModal(name);
-//     modalBody.innerHTML = '<pre id="memo"></pre>';
-//     const folder = 'respuestas';
-//     const file = `http://localhost/local/api/ecf/${folder}/${name}`;
-//     const txt = await getcontent(file);
-//     modalBody.innerHTML = `<pre id="memo">${txt}</pre></br><Button onClick="DescargarXML()">Descargar</Button>`;
-// }
-
-// export function DescargarXML() {
-//     const memo = document.getElementById("memo");
-//     const xml = memo.innerText;
-//     const blob = new Blob([xml], { type: 'application/xml' });
-//     const url = URL.createObjectURL(blob);
-//     const a = document.createElement('a');
-//     a.href = url;
-//     a.download = modalTitle.textContent;
-//     document.body.appendChild(a);
-//     a.click();
-//     document.body.removeChild(a);
-//     URL.revokeObjectURL(url);
-// }

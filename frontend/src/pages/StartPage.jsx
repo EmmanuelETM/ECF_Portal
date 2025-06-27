@@ -19,7 +19,7 @@ import {
   ThisYear,
   Today,
   Yesterday,
-} from "../lib/date-helper";
+} from "../lib/date-helpers";
 
 import { API_PATH, getIndicadores } from "../data/query";
 

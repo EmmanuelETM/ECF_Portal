@@ -14,6 +14,10 @@ export default function RecepcionPage() {
     Razon: "",
     Tipo: "Todos",
   });
+  const [date, setDate] = useState({
+    from: "",
+    to: "",
+  });
 
   const [sortOrder, setSortOrder] = useState("desc");
 
@@ -55,7 +59,7 @@ export default function RecepcionPage() {
       <p className="text-2xl font-semibold">Recepción de Documentos</p>
 
       <div className="flex flex-col gap-2 max-w-6xl w-full">
-        <DateRange />
+        <DateRange date={date} setDate={setDate} />
         <Filters filters={filters} setFilters={setFilters} />
 
         <div className="flex items-center gap-4 mt-4">
