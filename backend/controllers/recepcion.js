@@ -2,6 +2,11 @@ import RecepcionModel from "../models/recepcion.js";
 
 class RecepcionController {
   static async getAll(req, res) {
+    const { FechaEmisionDesde, FechaEmisionHasta } = req.query;
+
+    if (FechaEmisionDesde && FechaEmisionHasta)
+      console.log(FechaEmisionDesde, FechaEmisionHasta);
+
     const recibidos = await RecepcionModel.getAll();
     return res.json(recibidos);
   }

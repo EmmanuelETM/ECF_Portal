@@ -1,12 +1,12 @@
-import { Button } from "../components/Button";
+import { TableControls } from "../components/Table/TableControls";
 import { Table } from "../components/Table/Table";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { filterData } from "../lib/processData";
-import { Filters } from "../components/Table/Filters";
-import { DateRange } from "../components/Table/DateRange";
 import { getRecibidos } from "../data/query";
+import { getToday } from "../lib/date-helpers";
 
 export default function RecepcionPage() {
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState({
     eNCF: "",
@@ -14,28 +14,19 @@ export default function RecepcionPage() {
     Razon: "",
     Tipo: "Todos",
   });
+
   const [date, setDate] = useState({
-    from: "",
-    to: "",
+    from: getToday(),
+    to: getToday(),
   });
 
   const [sortOrder, setSortOrder] = useState("desc");
 
-  useEffect(() => {
-    const fetchData = () => {
-      getRecibidos()
-        .then((data) => setData(data))
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-
-    fetchData();
-  }, []);
-
-  const handleRefreshClick = async () => {
-    const data = await getRecibidos();
+  const handleSearchClick = async () => {
+    setLoading(true);
+    const data = await getRecibidos(date.from, date.to);
     setData(data);
+    setLoading(false);
   };
 
   const handleLimpiarClick = () => {
@@ -58,20 +49,20 @@ export default function RecepcionPage() {
     <div className="flex flex-col gap-6 px-4">
       <p className="text-2xl font-semibold">Recepción de Documentos</p>
 
-      <div className="flex flex-col gap-2 max-w-6xl w-full">
-        <DateRange date={date} setDate={setDate} />
-        <Filters filters={filters} setFilters={setFilters} />
-
-        <div className="flex items-center gap-4 mt-4">
-          <Button text="Refresh" onClick={handleRefreshClick} />
-          <Button text="Limpiar" onClick={handleLimpiarClick} />
-        </div>
-      </div>
+      <TableControls
+        date={date}
+        setDate={setDate}
+        filters={filters}
+        setFilters={setFilters}
+        handleSearchClick={handleSearchClick}
+        handleLimpiarClick={handleLimpiarClick}
+      />
 
       <Table
         data={filteredData}
         sortOrder={sortOrder}
         setSortOrder={setSortOrder}
+        loading={loading}
         view="recepcion"
       />
     </div>

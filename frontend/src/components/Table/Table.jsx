@@ -1,7 +1,8 @@
 import { ArrowUp, ArrowDown } from "lucide-react";
 import { Actions } from "./Actions";
+import { Loading } from "../Loading";
 
-export function Table({ data, sortOrder, setSortOrder, view }) {
+export function Table({ data, sortOrder, setSortOrder, loading, view }) {
   return (
     <div className="overflow-x-auto">
       <table className="w-full border-spacing-0 rounded-xl overflow-hidden text-center">
@@ -33,34 +34,45 @@ export function Table({ data, sortOrder, setSortOrder, view }) {
             <th className="p-3 font-semibold">Acciones</th>
           </tr>
         </thead>
-        <tbody className="bg-gray-100">
-          {data.length > 0 ? (
-            data.map((row, index) => {
-              return (
-                <tr key={index}>
-                  <td className="p-3">{row.eNCF}</td>
-                  <td className="p-3">{row.Archivo}</td>
-                  <td className="p-3">{row.FechaEmision}</td>
-                  <td className="p-3">${row.MontoTotal}</td>
-                  <td className="p-3 hidden">{row.Tipo}</td>
-                  <td className="p-3">
-                    {view === "emision" ? row.RNCComprador : row.RNCEmisor}
-                  </td>
-                  <td className="p-3">
-                    {view === "emision"
-                      ? row.RazonSocialComprador
-                      : row.RazonSocialEmisor}
-                  </td>
-                  <td className="p-3">
-                    <Actions archivo={row.Archivo} view={view} />
-                  </td>
-                </tr>
-              );
-            })
-          ) : (
-            <></>
-          )}
-        </tbody>
+
+        {loading ? (
+          <>
+            <tr>
+              <td colSpan={8}>
+                <Loading />
+              </td>
+            </tr>
+          </>
+        ) : (
+          <tbody>
+            {data.length > 0 ? (
+              data.map((row, index) => {
+                return (
+                  <tr key={index} className="odd:bg-gray-200 even:bg-gray-50">
+                    <td className="p-3">{row.eNCF}</td>
+                    <td className="p-3">{row.Archivo}</td>
+                    <td className="p-3">{row.FechaEmision}</td>
+                    <td className="p-3">${row.MontoTotal}</td>
+                    <td className="p-3 hidden">{row.Tipo}</td>
+                    <td className="p-3">
+                      {view === "emision" ? row.RNCComprador : row.RNCEmisor}
+                    </td>
+                    <td className="p-3">
+                      {view === "emision"
+                        ? row.RazonSocialComprador
+                        : row.RazonSocialEmisor}
+                    </td>
+                    <td className="p-3">
+                      <Actions archivo={row.Archivo} view={view} />
+                    </td>
+                  </tr>
+                );
+              })
+            ) : (
+              <></>
+            )}
+          </tbody>
+        )}
       </table>
     </div>
   );

@@ -3,6 +3,7 @@ import StartPage from "./pages/StartPage";
 import EmisionPage from "./pages/EmisionPage";
 import RecepcionPage from "./pages/RecepcionPage";
 import ConfigPage from "./pages/ConfiguracionPage";
+import SkeletonPage from "./pages/SkeletonPage";
 import { useState } from "react";
 import { Navbar } from "./components/Navbar";
 
@@ -14,7 +15,7 @@ function App() {
     config: <ConfigPage />,
   };
 
-  const [route, setRoute] = useState("emision");
+  const [route, setRoute] = useState("start");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 

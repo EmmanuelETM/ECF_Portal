@@ -1,9 +1,9 @@
 import { useRef, useEffect, useState } from "react";
 import { ReceiptText, X, Download } from "lucide-react";
-import { getXml } from "../../../data/query";
-import { formatXml, highlightXML } from "../../../lib/utils";
-import { downloadXml } from "../../../lib/download";
-import { Button } from "../../Button";
+import { getXml } from "../../data/query";
+import { formatXml, highlightXML } from "../../lib/utils";
+import { downloadXml } from "../../lib/download";
+import { Button } from "../Button";
 
 export function XMLDialog({ archivo, view }) {
   const dialogRef = useRef(null);
@@ -49,7 +49,7 @@ export function XMLDialog({ archivo, view }) {
           <div className="flex justify-between items-center px-6 py-4">
             <h2 className="text-xl font-semibold truncate">{archivo}</h2>
             <button
-              className="text-gray-500 hover:text-black"
+              className="text-gray-500 hover:text-black cursor-pointer"
               onClick={closeDialog}
             >
               <X size={20} />

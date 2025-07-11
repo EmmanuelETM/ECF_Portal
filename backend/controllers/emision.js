@@ -2,6 +2,11 @@ import EmisionModel from "../models/emision.js";
 
 class EmisionController {
   static async getAll(req, res) {
+    const { FechaEmisionDesde, FechaEmisionHasta } = req.query;
+
+    if (FechaEmisionDesde && FechaEmisionHasta)
+      console.log(FechaEmisionDesde, FechaEmisionHasta);
+
     const emitidos = await EmisionModel.getAll();
     return res.json(emitidos);
   }

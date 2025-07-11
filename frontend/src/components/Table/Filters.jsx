@@ -6,13 +6,15 @@ export function Filters({ filters, setFilters }) {
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
+  const inputStyle = "w-full border border-gray-400 rounded-lg p-2";
+
   return (
     <>
-      <p className="text-xl font-semibold mb-2">Filtros</p>
+      <p className="text-xl font-semibold m-2">Filtros</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <input
           name="eNCF"
-          className="w-full border border-gray-400 focus:border-green-600 rounded-lg p-2"
+          className={inputStyle}
           placeholder="eNCF"
           type="text"
           value={filters.eNCF}
@@ -20,7 +22,7 @@ export function Filters({ filters, setFilters }) {
         />
         <input
           name="RNC"
-          className="w-full border border-gray-400 rounded-lg p-2"
+          className={inputStyle}
           placeholder="RNC"
           type="text"
           value={filters.RNC}
@@ -28,14 +30,14 @@ export function Filters({ filters, setFilters }) {
         />
         <input
           name="Razon"
-          className="w-full border border-gray-400 rounded-lg p-2"
+          className={inputStyle}
           placeholder="Razón Social"
           type="text"
           value={filters.Razon}
           onChange={handleFilterChange}
         />
         <select
-          className="w-full border border-gray-400 p-2 rounded-lg"
+          className={inputStyle}
           name="Tipo"
           value={filters.Tipo}
           onChange={handleFilterChange}
