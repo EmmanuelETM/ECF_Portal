@@ -4,17 +4,21 @@ import { getXml } from "../../data/query";
 import { formatXml, highlightXML } from "../../lib/utils";
 import { downloadXml } from "../../lib/download";
 import { Button } from "../Button";
+import { Loading } from "../Loading";
 
 export function XMLDialog({ archivo, view }) {
   const dialogRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (open) {
+      setLoading(true);
       getXml(view, archivo)
         .then((file) => {
           setFile(file);
+          setLoading(false);
         })
         .catch((err) => console.log(err));
     }
@@ -56,23 +60,30 @@ export function XMLDialog({ archivo, view }) {
             </button>
           </div>
 
-          <div className="flex-1 p-4 overflow-auto bg-stone-200 border text-left border-stone-400 rounded-md mx-4 mb-4">
-            <pre
-              className="whitespace-pre break-words font-mono text-sm sm:text-base"
-              dangerouslySetInnerHTML={{
-                __html: highlightXML(formatXml(file)),
-              }}
-            />
-          </div>
-
-          {file && (
-            <div className="w-full flex justify-end p-2 pr-4 mb-2">
-              <Button
-                onClick={() => downloadXml({ title: archivo, doc: file })}
-                Icon={Download}
-                text={"Download Xml"}
-              />
+          {loading ? (
+            <div className="flex flex-1 items-center justify-center bg-white">
+              <Loading text={"xml"} />
             </div>
+          ) : (
+            <>
+              <div className="flex-1 p-4 overflow-auto bg-stone-200 border text-left border-stone-400 rounded-md mx-4 mb-4">
+                <pre
+                  className="whitespace-pre break-words font-mono text-sm sm:text-base"
+                  dangerouslySetInnerHTML={{
+                    __html: highlightXML(formatXml(file)),
+                  }}
+                />
+              </div>
+              {file && (
+                <div className="w-full flex justify-end p-2 pr-4 mb-2">
+                  <Button
+                    onClick={() => downloadXml({ title: archivo, doc: file })}
+                    Icon={Download}
+                    text={"Download Xml"}
+                  />
+                </div>
+              )}
+            </>
           )}
         </div>
       </dialog>

@@ -1,17 +1,20 @@
 import { Sidebar } from "./components/Sidebar/Sidebar";
 import StartPage from "./pages/StartPage";
-import EmisionPage from "./pages/EmisionPage";
-import RecepcionPage from "./pages/RecepcionPage";
 import ConfigPage from "./pages/ConfiguracionPage";
-import SkeletonPage from "./pages/SkeletonPage";
+import IndicadoresEmitidos from "./pages/resumen/IndicadoresEmitidos";
+import IndicadoresRecibidos from "./pages/resumen/IndicadoresRecibidos";
+import ConsultarEmitidosPage from "./pages/consultas/ConsultarEmitidos";
+import ConsultarRecibidosPage from "./pages/consultas/ConsultarRecibidos";
 import { useState } from "react";
 import { Navbar } from "./components/Navbar";
 
 function App() {
   const ROUTES = {
     start: <StartPage />,
-    emision: <EmisionPage />,
-    recepcion: <RecepcionPage />,
+    indicadoresEmitidos: <IndicadoresEmitidos />,
+    indicadoresRecibidos: <IndicadoresRecibidos />,
+    consultarEmitidos: <ConsultarEmitidosPage />,
+    consultarRecibidos: <ConsultarRecibidosPage />,
     config: <ConfigPage />,
   };
 

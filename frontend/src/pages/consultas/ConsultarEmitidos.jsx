@@ -1,11 +1,12 @@
-import { TableControls } from "../components/Table/TableControls";
-import { Table } from "../components/Table/Table";
+import { TableControls } from "../../components/Table/TableControls";
+import { Table } from "../../components/Table/Table";
 import { useState, useMemo } from "react";
-import { filterData } from "../lib/processData";
-import { getRecibidos } from "../data/query";
-import { getToday } from "../lib/date-helpers";
+import { filterData } from "../../lib/processData";
+import { getEmitidos } from "../../data/query";
+import { getToday } from "../../lib/date-helpers";
+import { Title } from "../../components/Title";
 
-export default function RecepcionPage() {
+export default function ConsultarEmitidosPage() {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState({
@@ -24,7 +25,7 @@ export default function RecepcionPage() {
 
   const handleSearchClick = async () => {
     setLoading(true);
-    const data = await getRecibidos(date.from, date.to);
+    const data = await getEmitidos(date.from, date.to);
     setData(data);
     setLoading(false);
   };
@@ -40,14 +41,14 @@ export default function RecepcionPage() {
 
   const filteredData = useMemo(() => {
     return filterData(data, sortOrder, filters, {
-      RNC: "RNCEmisor",
-      Razon: "RazonSocialEmisor",
+      RNC: "RNCComprador",
+      Razon: "RazonSocialComprador",
     });
   }, [data, sortOrder, filters]);
 
   return (
-    <div className="flex flex-col gap-6 px-4">
-      <p className="text-2xl font-semibold">Recepción de Documentos</p>
+    <div className="flex flex-col gap-6">
+      <Title text={"Consultar Emitidos"} />
 
       <TableControls
         date={date}
@@ -63,7 +64,7 @@ export default function RecepcionPage() {
         sortOrder={sortOrder}
         setSortOrder={setSortOrder}
         loading={loading}
-        view="recepcion"
+        view="emision"
       />
     </div>
   );

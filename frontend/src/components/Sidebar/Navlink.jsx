@@ -8,7 +8,7 @@ export function NavLink({ text, Icon, onClick, isActive, isCollapsed }) {
       onClick={onClick}
     >
       <div className="min-w-[24px] flex justify-center items-center">
-        {Icon && <Icon size={20} />}
+        {Icon && <Icon size={24} />}
       </div>
       {!isCollapsed && <span className="ml-3 text-sm font-medium">{text}</span>}
     </li>

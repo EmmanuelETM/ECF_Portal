@@ -36,13 +36,13 @@ export function Table({ data, sortOrder, setSortOrder, loading, view }) {
         </thead>
 
         {loading ? (
-          <>
+          <tbody>
             <tr>
-              <td colSpan={8}>
-                <Loading />
+              <td colSpan={8} className="bg-gray-100">
+                <Loading text={"data"} />
               </td>
             </tr>
-          </>
+          </tbody>
         ) : (
           <tbody>
             {data.length > 0 ? (

@@ -4,6 +4,8 @@ import {
   Settings,
   Home,
   LogOut,
+  FileOutput,
+  FileInput,
   Menu,
   X,
 } from "lucide-react";
@@ -90,26 +92,66 @@ export function Sidebar({
               setSidebarOpen(false);
             }}
           />
+
+          {!sidebarCollapsed && (
+            <p className="pt-2 pb-1 ml-3 text-gray-500 text-sm">Resumen</p>
+          )}
+          {sidebarCollapsed && <hr className="text-gray-400 my-2 sm:mt-0" />}
+
           <NavLink
-            text="Emisión"
+            text="Emitidos"
+            Icon={FileOutput}
+            isCollapsed={sidebarCollapsed}
+            isActive={route === "indicadoresEmitidos"}
+            onClick={() => {
+              setRoute("indicadoresEmitidos");
+              setSidebarOpen(false);
+            }}
+          />
+          <NavLink
+            text="Recibidos"
+            Icon={FileInput}
+            isCollapsed={sidebarCollapsed}
+            isActive={route === "indicadoresRecibidos"}
+            onClick={() => {
+              setRoute("indicadoresRecibidos");
+              setSidebarOpen(false);
+            }}
+          />
+
+          {!sidebarCollapsed && (
+            <p className="pt-2 pb-1 ml-3 text-gray-500 text-sm">Consultar</p>
+          )}
+          {sidebarCollapsed && <hr className="text-gray-400 my-2 sm:mt-0" />}
+
+          <NavLink
+            text="Emitidos"
             Icon={Send}
             isCollapsed={sidebarCollapsed}
-            isActive={route === "emision"}
+            isActive={route === "consultarEmitidos"}
             onClick={() => {
-              setRoute("emision");
+              setRoute("consultarEmitidos");
               setSidebarOpen(false);
             }}
           />
           <NavLink
-            text="Recepción"
+            text="Recibidos"
             Icon={CheckCheck}
             isCollapsed={sidebarCollapsed}
-            isActive={route === "recepcion"}
+            isActive={route === "consultarRecibidos"}
             onClick={() => {
-              setRoute("recepcion");
+              setRoute("consultarRecibidos");
               setSidebarOpen(false);
             }}
           />
+
+          {!sidebarCollapsed && (
+            <>
+              <p className="pt-2 pb-1 ml-3 text-gray-500 text-sm">Admin</p>
+            </>
+          )}
+          {sidebarCollapsed && <hr className="text-gray-400 my-2 sm:mt-0" />}
+
           <NavLink
             text="Configuración"
             Icon={Settings}

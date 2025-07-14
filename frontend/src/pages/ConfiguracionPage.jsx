@@ -1,7 +1,9 @@
+import { Title } from "../components/Title";
+
 export default function ConfigPage() {
   return (
     <>
-      <h1>Config Page</h1>
+      <Title text={"This is config page"} />
     </>
   );
 }
