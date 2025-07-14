@@ -2,7 +2,7 @@ import { TableControls } from "../../components/Table/TableControls";
 import { Table } from "../../components/Table/Table";
 import { useState, useMemo } from "react";
 import { filterData } from "../../lib/processData";
-import { getEmitidos } from "../../data/query";
+import { getListaECFEmitidos } from "../../api/emitidos";
 import { getToday } from "../../lib/date-helpers";
 import { Title } from "../../components/Title";
 
@@ -25,7 +25,8 @@ export default function ConsultarEmitidosPage() {
 
   const handleSearchClick = async () => {
     setLoading(true);
-    const data = await getEmitidos(date.from, date.to);
+    const data = await getListaECFEmitidos(date.from, date.to);
+    console.log(data);
     setData(data);
     setLoading(false);
   };
@@ -40,10 +41,7 @@ export default function ConsultarEmitidosPage() {
   };
 
   const filteredData = useMemo(() => {
-    return filterData(data, sortOrder, filters, {
-      RNC: "RNCComprador",
-      Razon: "RazonSocialComprador",
-    });
+    return filterData(data, sortOrder, filters);
   }, [data, sortOrder, filters]);
 
   return (

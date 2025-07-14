@@ -1,6 +1,7 @@
 import { ArrowUp, ArrowDown } from "lucide-react";
 import { Actions } from "./Actions";
 import { Loading } from "../Loading";
+import { formatMonto } from "../../lib/utils";
 
 export function Table({ data, sortOrder, setSortOrder, loading, view }) {
   return (
@@ -21,7 +22,7 @@ export function Table({ data, sortOrder, setSortOrder, loading, view }) {
                 Fecha {sortOrder === "asc" ? <ArrowUp /> : <ArrowDown />}
               </div>
             </th>
-            <th className="p-3 font-semibold">Monto Total</th>
+            <th className="p-3 font-semibold text-right">Monto Total</th>
             <th className="p-3 font-semibold hidden">Tipo</th>
             <th className="p-3 font-semibold">
               {view === "emision" ? "RNC Comprador" : "RNC Emisor"}
@@ -52,16 +53,12 @@ export function Table({ data, sortOrder, setSortOrder, loading, view }) {
                     <td className="p-3">{row.eNCF}</td>
                     <td className="p-3">{row.Archivo}</td>
                     <td className="p-3">{row.FechaEmision}</td>
-                    <td className="p-3">${row.MontoTotal}</td>
+                    <td className="p-3 text-right">
+                      {formatMonto(row.MontoTotal)}
+                    </td>
                     <td className="p-3 hidden">{row.Tipo}</td>
-                    <td className="p-3">
-                      {view === "emision" ? row.RNCComprador : row.RNCEmisor}
-                    </td>
-                    <td className="p-3">
-                      {view === "emision"
-                        ? row.RazonSocialComprador
-                        : row.RazonSocialEmisor}
-                    </td>
+                    <td className="p-3">{row.RNC}</td>
+                    <td className="p-3">{row.RazonSocial}</td>
                     <td className="p-3">
                       <Actions archivo={row.Archivo} view={view} />
                     </td>

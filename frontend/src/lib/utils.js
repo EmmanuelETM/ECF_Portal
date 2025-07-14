@@ -1,10 +1,14 @@
 // Format Monto
 export function formatMonto(valor) {
-  return new Intl.NumberFormat("es-DO", {
-    style: "decimal",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(valor);
+  if (isNaN(valor)) return "$0.00";
+  return (
+    "$" +
+    new Intl.NumberFormat("es-DO", {
+      style: "decimal",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(valor)
+  );
 }
 
 // Format XML

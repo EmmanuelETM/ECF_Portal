@@ -3,7 +3,6 @@ import { Indicator } from "../../components/Indicator";
 
 import {
   Calculator,
-  CheckCheck,
   CircleDot,
   Ban,
   DollarSign,
@@ -21,6 +20,8 @@ import {
   Today,
   Yesterday,
 } from "../../lib/date-helpers";
+
+import { formatMonto } from "../../lib/utils";
 
 import SkeletonPage from "../SkeletonPage";
 import { Title } from "../../components/Title";
@@ -106,12 +107,12 @@ export default function IndicadoresEmitidosPage() {
             {resumen && (
               <div className="grid md:grid-cols-2 gap-4">
                 <Indicator
-                  value={resumen.Monto}
+                  value={formatMonto(resumen.Monto)}
                   title={"Monto Total"}
                   Icon={DollarSign}
                 />
                 <Indicator
-                  value={resumen.ITBIS}
+                  value={formatMonto(resumen.ITBIS)}
                   title={"ITBIS"}
                   Icon={CircleDollarSign}
                 />
@@ -122,13 +123,13 @@ export default function IndicadoresEmitidosPage() {
           <div className="flex flex-col gap-3 mt-8">
             <Title text={"Por Tipo de Comprobantes"} />
             {porTipoDeComprobante && (
-              <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+              <div className="grid grid-cols-2 xl:grid-cols-5 gap-4">
                 {porTipoDeComprobante.map((item, index) => (
                   <Indicator
                     key={index}
-                    value={item.valor}
+                    value={formatMonto(item.valor)}
                     title={item.tipo}
-                    subtitle={item.itbis}
+                    subtitle={formatMonto(item.itbis)}
                   />
                 ))}
               </div>

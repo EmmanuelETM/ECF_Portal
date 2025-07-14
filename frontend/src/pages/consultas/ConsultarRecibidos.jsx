@@ -2,7 +2,7 @@ import { TableControls } from "../../components/Table/TableControls";
 import { Table } from "../../components/Table/Table";
 import { useState, useMemo } from "react";
 import { filterData } from "../../lib/processData";
-import { getRecibidos } from "../../data/query";
+import { getListaECFRecibidos } from "../../api/recibidos";
 import { getToday } from "../../lib/date-helpers";
 import { Title } from "../../components/Title";
 
@@ -25,7 +25,8 @@ export default function ConsultarRecibidosPage() {
 
   const handleSearchClick = async () => {
     setLoading(true);
-    const data = await getRecibidos(date.from, date.to);
+    const data = await getListaECFRecibidos(date.from, date.to);
+    console.log(data);
     setData(data);
     setLoading(false);
   };
@@ -40,10 +41,7 @@ export default function ConsultarRecibidosPage() {
   };
 
   const filteredData = useMemo(() => {
-    return filterData(data, sortOrder, filters, {
-      RNC: "RNCEmisor",
-      Razon: "RazonSocialEmisor",
-    });
+    return filterData(data, sortOrder, filters);
   }, [data, sortOrder, filters]);
 
   return (

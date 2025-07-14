@@ -11,21 +11,21 @@ const sortData = (data, sortOrder) => {
   });
 };
 
-export const filterData = (data, sortOrder, filters, { RNC, Razon }) => {
+export const filterData = (data, sortOrder, filters) => {
   const sortedData = sortData(data, sortOrder);
 
   return sortedData.filter((item) => {
     const matcheNCF =
       !filters.eNCF ||
       item.eNCF.toLowerCase().includes(filters.eNCF.toLowerCase());
-    const matchRNC = !filters.RNC || item[RNC].toString().includes(filters.RNC);
+    const matchRNC = !filters.RNC || item.RNC.toString().includes(filters.RNC);
     const matchRazon =
       !filters.Razon ||
-      item[Razon].toLowerCase().includes(filters.Razon.toLowerCase());
+      item.RazonSocial.toLowerCase().includes(filters.Razon.toLowerCase());
     const matchTipo =
       !filters.Tipo || filters.Tipo === "Todos"
         ? true
-        : item.Tipo.toString() === filters.Tipo.toString();
+        : item.TipoeCF.toString() === filters.Tipo.toString();
     return matcheNCF && matchRNC && matchRazon && matchTipo;
   });
 };
