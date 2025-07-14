@@ -26,7 +26,6 @@ export default function ConsultarRecibidosPage() {
   const handleSearchClick = async () => {
     setLoading(true);
     const data = await getListaECFRecibidos(date.from, date.to);
-    console.log(data);
     setData(data);
     setLoading(false);
   };

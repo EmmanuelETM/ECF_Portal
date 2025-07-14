@@ -26,7 +26,6 @@ export default function ConsultarEmitidosPage() {
   const handleSearchClick = async () => {
     setLoading(true);
     const data = await getListaECFEmitidos(date.from, date.to);
-    console.log(data);
     setData(data);
     setLoading(false);
   };

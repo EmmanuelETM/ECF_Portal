@@ -7,7 +7,7 @@ export function Actions({ view, archivo }) {
     <div className="flex gap-2 items-center justify-center">
       <XMLDialog archivo={archivo} view={view} />
       <SendDialog archivo={archivo} view={view} />
-      <LogDialog archivo={archivo} view={view} />
+      <LogDialog archivo={archivo} />
     </div>
   );
 }

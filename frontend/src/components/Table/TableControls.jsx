@@ -15,7 +15,7 @@ export function TableControls({
     <div className="flex flex-col gap-2 max-w-6xl w-full">
       <div className="mb-2 sm:mb-4">
         <DateRange date={date} setDate={setDate} />
-        <Button text="Search" Icon={Search} onClick={handleSearchClick} />
+        <Button text="Buscar" Icon={Search} onClick={handleSearchClick} />
       </div>
 
       <Filters filters={filters} setFilters={setFilters} />

@@ -1,10 +1,11 @@
 import { useRef, useEffect, useState } from "react";
-import { ReceiptText, X, Download } from "lucide-react";
-import { getXml } from "../../data/query";
+import { ReceiptText, Download, FileText } from "lucide-react";
+import { showPDF, showXml } from "../../lib/files";
 import { formatXml, highlightXML } from "../../lib/utils";
-import { downloadXml } from "../../lib/download";
+import { download } from "../../lib/download";
 import { Button } from "../Button";
 import { Loading } from "../Loading";
+import { DialogTitle } from "./DialogTitle";
 
 export function XMLDialog({ archivo, view }) {
   const dialogRef = useRef(null);
@@ -15,7 +16,7 @@ export function XMLDialog({ archivo, view }) {
   useEffect(() => {
     if (open) {
       setLoading(true);
-      getXml(view, archivo)
+      showXml(archivo, view)
         .then((file) => {
           setFile(file);
           setLoading(false);
@@ -50,15 +51,7 @@ export function XMLDialog({ archivo, view }) {
         onClose={closeDialog}
       >
         <div className="flex flex-col h-full bg-white rounded-lg overflow-hidden">
-          <div className="flex justify-between items-center px-6 py-4">
-            <h2 className="text-xl font-semibold truncate">{archivo}</h2>
-            <button
-              className="text-gray-500 hover:text-black cursor-pointer"
-              onClick={closeDialog}
-            >
-              <X size={20} />
-            </button>
-          </div>
+          <DialogTitle title={archivo} closeDialog={closeDialog} />
 
           {loading ? (
             <div className="flex flex-1 items-center justify-center bg-white">
@@ -75,11 +68,16 @@ export function XMLDialog({ archivo, view }) {
                 />
               </div>
               {file && (
-                <div className="w-full flex justify-end p-2 pr-4 mb-2">
+                <div className="w-full flex justify-end p-2 pr-4 mb-2 gap-2">
                   <Button
-                    onClick={() => downloadXml({ title: archivo, doc: file })}
+                    onClick={() => download({ title: archivo, doc: file })}
                     Icon={Download}
-                    text={"Download Xml"}
+                    text={"Descargar"}
+                  />
+                  <Button
+                    onClick={() => showPDF(archivo, view)}
+                    Icon={FileText}
+                    text={"PDF"}
                   />
                 </div>
               )}

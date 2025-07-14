@@ -1,16 +1,29 @@
 import { useRef, useState, useEffect } from "react";
-import { File, X } from "lucide-react";
+import { File } from "lucide-react";
+import { Download } from "lucide-react";
+import { DialogTitle } from "./DialogTitle";
+import { showLogs } from "../../lib/files";
+import { Loading } from "../Loading";
+import { Button } from "../Button";
+import { download } from "../../lib/download";
 
-export function LogDialog({ archivo, view }) {
+export function LogDialog({ archivo }) {
+  const dialogRef = useRef(null);
   const [open, setOpen] = useState(false);
+  const [file, setFile] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (open && view === "emision") {
-      console.log("somshi");
+    if (open) {
+      setLoading(true);
+      showLogs(archivo)
+        .then((data) => {
+          setFile(data);
+          setLoading(false);
+        })
+        .catch((err) => console.log("Error fetching logs: ", err));
     }
-  }, [open, view]);
-
-  const dialogRef = useRef(null);
+  }, [open, archivo]);
 
   const openDialog = () => {
     dialogRef.current?.showModal();
@@ -37,21 +50,29 @@ export function LogDialog({ archivo, view }) {
         onClose={closeDialog}
       >
         <div className="flex flex-col h-full bg-white rounded-lg overflow-hidden">
-          <div className="flex justify-between items-center px-6 py-4">
-            <h2 className="text-xl font-semibold truncate">{archivo}</h2>
-            <button
-              className="text-gray-500 hover:text-black"
-              onClick={closeDialog}
-            >
-              <X size={20} />
-            </button>
-          </div>
-
-          <div className="flex-1 p-4 overflow-auto bg-stone-200 border text-left border-stone-400 rounded-md mx-4 mb-4">
-            <pre className="whitespace-pre-wrap break-words">
-              idk, I just got here
-            </pre>
-          </div>
+          <DialogTitle title={archivo} closeDialog={closeDialog} />
+          {loading ? (
+            <div className="flex flex-1 items-center justify-center bg-white">
+              <Loading text={"xml"} />
+            </div>
+          ) : (
+            <>
+              <div className="flex-1 p-4 overflow-auto bg-stone-200 border text-left border-stone-400 rounded-md mx-4 mb-4">
+                <pre className="whitespace-pre break-words font-mono text-sm sm:text-sm">
+                  {file}
+                </pre>
+              </div>
+              {file && (
+                <div className="w-full flex justify-end p-2 pr-4 mb-2 gap-2">
+                  <Button
+                    onClick={() => download({ title: archivo, doc: file })}
+                    Icon={Download}
+                    text={"Descargar"}
+                  />
+                </div>
+              )}
+            </>
+          )}
         </div>
       </dialog>
     </>
