@@ -5,7 +5,8 @@ export async function getIndicadoresEmitidos(desde, hasta) {
   const endpoint = new URL(`${API_SERVER}/emitidos/indicadores`);
   if (desde) endpoint.searchParams.append("FechaEmisionDesde", desde);
   if (hasta) endpoint.searchParams.append("FechaEmisionHasta", hasta);
-  return fetch(endpoint);
+  const response = await fetch(endpoint);
+  return response.json();
 }
 
 // EMITIDOS
@@ -13,5 +14,6 @@ export async function getListaECFEmitidos(desde, hasta) {
   const endpoint = new URL(`${API_SERVER}/emitidos/consulta`);
   if (desde) endpoint.searchParams.append("FechaEmisionDesde", desde);
   if (hasta) endpoint.searchParams.append("FechaEmisionHasta", hasta);
-  return fetch(endpoint);
+  const response = await fetch(endpoint);
+  return response.json();
 }

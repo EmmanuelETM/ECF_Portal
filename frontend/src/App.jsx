@@ -9,6 +9,10 @@ import { useState } from "react";
 import { Navbar } from "./components/Navbar";
 
 function App() {
+  const [route, setRoute] = useState("start");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
   const ROUTES = {
     start: <StartPage />,
     indicadoresEmitidos: <IndicadoresEmitidos />,
@@ -17,10 +21,6 @@ function App() {
     consultarRecibidos: <ConsultarRecibidosPage />,
     config: <ConfigPage />,
   };
-
-  const [route, setRoute] = useState("start");
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">

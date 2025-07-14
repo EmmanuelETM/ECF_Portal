@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { Indicator } from "../../components/Indicator";
 
 import {
-  Send,
-  CheckCheck,
+  Calculator,
   CircleDot,
   Ban,
   DollarSign,
@@ -13,6 +12,7 @@ import {
 import { DropdownButton } from "../../components/Dropdown/DropDown";
 
 import {
+  getToday,
   LastYear,
   ThisMonth,
   ThisWeek,
@@ -21,36 +21,35 @@ import {
   Yesterday,
 } from "../../lib/date-helpers";
 
-import { getIndicadores } from "../../data/query";
 import SkeletonPage from "../SkeletonPage";
 import { Title } from "../../components/Title";
+import { getIndicadoresEmitidos } from "../../api/emitidos";
 
 export default function IndicadoresEmitidosPage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { montos, documentos, PorTipoDeComprobante } = data;
+  const { resumen, porTipoDeComprobante } = data;
 
   useEffect(() => {
     const fetchData = () => {
       setLoading(true);
-      getIndicadores()
+      getIndicadoresEmitidos("2000-01-01", getToday())
         .then((data) => {
           setData(data);
           setLoading(false);
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => console.log("Error fetching: ", err));
     };
     fetchData();
   }, []);
 
   const handleSelect = async (fn) => {
-    const { from, to } = await fn();
+    const { from, to } = fn();
     let result;
     setLoading(true);
-    if (from && to) result = await getIndicadores(from, to);
-    else result = await getIndicadores();
+
+    if (from && to) result = await getIndicadoresEmitidos(from, to);
+    else result = await getIndicadoresEmitidos();
 
     setData(result);
     setLoading(false);
@@ -58,45 +57,43 @@ export default function IndicadoresEmitidosPage() {
 
   return (
     <>
+      <div className="flex items-center justify-between mb-4">
+        <Title text={"Documentos Recibidos"} />
+        <DropdownButton
+          options={[
+            { label: "Hoy", fn: Today },
+            { label: "Ayer", fn: Yesterday },
+            { label: "Esta Semana", fn: ThisWeek },
+            { label: "Este Mes", fn: ThisMonth },
+            { label: "Este Año", fn: ThisYear },
+            { label: "Año Pasado", fn: LastYear },
+            {
+              label: "Todos",
+              fn: () => ({ from: "2000-01-01", to: getToday() }),
+            },
+          ]}
+          onSelect={handleSelect}
+        />
+      </div>
       {loading ? (
-        <SkeletonPage handleSelect={handleSelect} />
+        <SkeletonPage />
       ) : (
-        <div>
-          <div className="flex flex-col gap-6">
-            <div className="flex items-center justify-between mt-0 mb-4">
-              <Title text={"Documentos Emitidos"} />
-              <DropdownButton
-                options={[
-                  { label: "Hoy", fn: Today },
-                  { label: "Ayer", fn: Yesterday },
-                  { label: "Esta Semana", fn: ThisWeek },
-                  { label: "Este Mes", fn: ThisMonth },
-                  { label: "Este Año", fn: ThisYear },
-                  { label: "Año Pasado", fn: LastYear },
-                  { label: "Todos", fn: () => {} },
-                ]}
-                onSelect={handleSelect}
-              />
-            </div>
-            {documentos && (
-              <div className="grid grid-cols-2 grid-rows-2 md:grid-cols-4 sm:grid-rows-1 gap-4">
+        <>
+          <div className="flex flex-col gap-3">
+            {resumen && (
+              <div className="grid grid-cols-1 sm:grid-cols-3 sm:grid-rows-1 gap-4">
                 <Indicator
-                  value={documentos.Emitidos}
-                  title={"Emitidos"}
-                  Icon={Send}
+                  value={resumen.Conteo}
+                  title={"Total"}
+                  Icon={Calculator}
                 />
                 <Indicator
-                  value={documentos.Recibidos}
-                  title={"Recibidos"}
-                  Icon={CheckCheck}
-                />
-                <Indicator
-                  value={documentos.Pendientes}
+                  value={resumen.Pendientes}
                   title={"Pendientes"}
                   Icon={CircleDot}
                 />
                 <Indicator
-                  value={documentos.Rechazados}
+                  value={resumen.Rechazados}
                   title={"Rechazados"}
                   Icon={Ban}
                 />
@@ -104,16 +101,16 @@ export default function IndicadoresEmitidosPage() {
             )}
           </div>
 
-          <div className="flex flex-col gap-3 mt-8">
-            {montos && (
+          <div className="flex flex-col gap-3 mt-4">
+            {resumen && (
               <div className="grid md:grid-cols-2 gap-4">
                 <Indicator
-                  value={montos.MontoTotal}
+                  value={resumen.Monto}
                   title={"Monto Total"}
                   Icon={DollarSign}
                 />
                 <Indicator
-                  value={montos.ITBIS}
+                  value={resumen.ITBIS}
                   title={"ITBIS"}
                   Icon={CircleDollarSign}
                 />
@@ -123,9 +120,9 @@ export default function IndicadoresEmitidosPage() {
 
           <div className="flex flex-col gap-3 mt-8">
             <Title text={"Por Tipo de Comprobantes"} />
-            {PorTipoDeComprobante && (
+            {porTipoDeComprobante && (
               <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-                {PorTipoDeComprobante.map((item, index) => (
+                {porTipoDeComprobante.map((item, index) => (
                   <Indicator
                     key={index}
                     value={item.valor}
@@ -136,7 +133,7 @@ export default function IndicadoresEmitidosPage() {
               </div>
             )}
           </div>
-        </div>
+        </>
       )}
     </>
   );

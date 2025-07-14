@@ -4,7 +4,8 @@ export async function getIndicadoresRecibidos(desde, hasta) {
   const endpoint = new URL(`${API_SERVER}/recibidos/indicadores`);
   if (desde) endpoint.searchParams.append("FechaEmisionDesde", desde);
   if (hasta) endpoint.searchParams.append("FechaEmisionHasta", hasta);
-  return fetch(endpoint);
+  const response = await fetch(endpoint);
+  return response.json();
 }
 
 // ECF RECIBIDOS
@@ -12,5 +13,6 @@ export async function getListaECFRecibidos(desde, hasta) {
   const endpoint = new URL(`${API_SERVER}/recibidos/consulta`);
   if (desde) endpoint.searchParams.append("FechaEmisionDesde", desde);
   if (hasta) endpoint.searchParams.append("FechaEmisionHasta", hasta);
-  return fetch(endpoint);
+  const response = await fetch(endpoint);
+  return response.json();
 }
