@@ -11,6 +11,7 @@ import {
 
 export function SendDialog({ archivo, view }) {
   const dialogRef = useRef(null);
+  const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
   const [pageStack, setPageStack] = useState(["menu"]);
   const currentPage = pageStack[pageStack.length - 1];
@@ -58,28 +59,32 @@ export function SendDialog({ archivo, view }) {
     console.log("consultar");
   };
 
-  const handleDgiiAceptar = async (archivo) => {
+  const handleDgiiAceptar = async () => {
     const ecf = archivo.replace(/\.xml$/, "");
     await enviarDGIIAC_Aceptacion(ecf);
     closeDialog();
   };
 
-  const handleDgiiRechazo = async (archivo, MotivoRechazo) => {
+  const handleDgiiRechazo = async (MotivoRechazo) => {
     const ecf = archivo.replace(/\.xml$/, "");
     await enviarDGIIAC_Rechazo(ecf, MotivoRechazo);
     closeDialog();
   };
 
-  const handleClienteAceptar = async (archivo) => {
+  const handleClienteAceptar = async () => {
     const ecf = archivo.replace(/\.xml$/, "");
     await enviarClienteAC_Aceptacion(ecf);
     closeDialog();
   };
 
-  const handleClienteRechazo = async (archivo, MotivoRechazo) => {
+  const handleClienteRechazo = async (MotivoRechazo) => {
     const ecf = archivo.replace(/\.xml$/, "");
     await enviarClienteAC_Rechazo(ecf, MotivoRechazo);
     closeDialog();
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
   };
 
   return (
@@ -161,17 +166,13 @@ export function SendDialog({ archivo, view }) {
               <div className="grid gap-4">
                 <button
                   className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() =>
-                    handleDgiiRechazo(archivo, "Informaciones Erroneas")
-                  }
+                  onClick={() => handleDgiiRechazo("Informaciones Erroneas")}
                 >
                   Informaciones Erroneas
                 </button>
                 <button
                   className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() =>
-                    handleDgiiRechazo(archivo, "Cambio de Productos")
-                  }
+                  onClick={() => handleDgiiRechazo("Cambio de Productos")}
                 >
                   Cambio de Productos
                 </button>
@@ -188,7 +189,7 @@ export function SendDialog({ archivo, view }) {
               <div className="grid grid-cols-2 gap-4">
                 <button
                   className="bg-green-600 text-lg cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() => handleClienteAceptar(archivo)}
+                  onClick={() => handleClienteAceptar()}
                 >
                   Aceptacion
                 </button>
@@ -205,35 +206,39 @@ export function SendDialog({ archivo, view }) {
               <div className="grid gap-4">
                 <button
                   className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() =>
-                    handleClienteRechazo(archivo, "Informaciones Erroneas")
-                  }
+                  onClick={() => handleClienteRechazo("Informaciones Erroneas")}
                 >
                   Informaciones Erroneas
                 </button>
 
                 <button
                   className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() =>
-                    handleClienteRechazo(archivo, "Cambio de Productos")
-                  }
+                  onClick={() => handleClienteRechazo("Cambio de Productos")}
                 >
                   Cambio de Productos
                 </button>
                 <button
                   className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
                   onClick={() =>
-                    handleClienteRechazo(archivo, "Transaccion no Reconocida")
+                    handleClienteRechazo("Transaccion no Reconocida")
                   }
                 >
                   Transaccion No Reconocida
                 </button>
                 <button
                   className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() => {}}
+                  onClick={() => setShow(!show)}
                 >
-                  Otro
+                  Otros
                 </button>
+                {show ? (
+                  <form onSubmit={handleSubmit}>
+                    <input name="MotivoRechazo" id="" />
+                    <button type="submit"></button>
+                  </form>
+                ) : (
+                  <></>
+                )}
               </div>
             )}
           </div>

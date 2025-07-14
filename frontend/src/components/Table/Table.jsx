@@ -5,7 +5,7 @@ import { formatMonto } from "../../lib/utils";
 
 export function Table({ data, sortOrder, setSortOrder, loading, view }) {
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto mb-10">
       <table className="w-full border-spacing-0 rounded-xl overflow-hidden text-center">
         <thead>
           <tr className="bg-green-600 text-white">
