@@ -5,7 +5,7 @@ import { formatXml, highlightXML } from "../../lib/utils";
 import { download } from "../../lib/download";
 import { Button } from "../Button";
 import { Loading } from "../Loading";
-import { DialogTitle } from "./DialogTitle";
+import { DialogTitle } from "./components/DialogTitle";
 
 export function XMLDialog({ archivo, view }) {
   const dialogRef = useRef(null);

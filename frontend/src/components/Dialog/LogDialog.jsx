@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { File } from "lucide-react";
 import { Download } from "lucide-react";
-import { DialogTitle } from "./DialogTitle";
+import { DialogTitle } from "./components/DialogTitle";
 import { showLogs } from "../../lib/files";
 import { Loading } from "../Loading";
 import { Button } from "../Button";

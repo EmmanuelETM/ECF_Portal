@@ -1,6 +1,13 @@
 import { useRef, useState, useEffect } from "react";
-import { Send, ChevronRight } from "lucide-react";
-import { DialogTitle } from "./DialogTitle";
+import { Send } from "lucide-react";
+import { DialogTitle } from "./components/DialogTitle";
+import { DialogBreadcrumb } from "./components/DialogBreadCrumb";
+import {
+  enviarClienteAC_Aceptacion,
+  enviarClienteAC_Rechazo,
+  enviarDGIIAC_Aceptacion,
+  enviarDGIIAC_Rechazo,
+} from "../../api/envio";
 
 export function SendDialog({ archivo, view }) {
   const dialogRef = useRef(null);
@@ -51,8 +58,28 @@ export function SendDialog({ archivo, view }) {
     console.log("consultar");
   };
 
-  const handleAceptacion = () => {
-    console.log("aceptacion");
+  const handleDgiiAceptar = async (archivo) => {
+    const ecf = archivo.replace(/\.xml$/, "");
+    await enviarDGIIAC_Aceptacion(ecf);
+    closeDialog();
+  };
+
+  const handleDgiiRechazo = async (archivo, MotivoRechazo) => {
+    const ecf = archivo.replace(/\.xml$/, "");
+    await enviarDGIIAC_Rechazo(ecf, MotivoRechazo);
+    closeDialog();
+  };
+
+  const handleClienteAceptar = async (archivo) => {
+    const ecf = archivo.replace(/\.xml$/, "");
+    await enviarClienteAC_Aceptacion(ecf);
+    closeDialog();
+  };
+
+  const handleClienteRechazo = async (archivo, MotivoRechazo) => {
+    const ecf = archivo.replace(/\.xml$/, "");
+    await enviarClienteAC_Rechazo(ecf, MotivoRechazo);
+    closeDialog();
   };
 
   return (
@@ -72,41 +99,23 @@ export function SendDialog({ archivo, view }) {
       >
         <div className="flex flex-col h-full bg-white rounded-lg overflow-hidden">
           <DialogTitle title={archivo} closeDialog={closeDialog} />
-          {pageStack.length > 0 && (
-            <div className="text-xl text-left flex mx-6 mb-2">
-              {pageStack.map((page, index) => (
-                <span key={index} className="flex items-center">
-                  {index > 0 && <ChevronRight />}
-                  {index < pageStack.length - 1 ? (
-                    <button
-                      onClick={() =>
-                        setPageStack((prev) => prev.slice(0, index + 1))
-                      }
-                      className="cursor-pointer hover:underline"
-                    >
-                      {formatPageName(page)}
-                    </button>
-                  ) : (
-                    <span className="font-semibold">
-                      {formatPageName(page)}
-                    </span>
-                  )}
-                </span>
-              ))}
-            </div>
-          )}
+          <DialogBreadcrumb
+            pageStack={pageStack}
+            setPageStack={setPageStack}
+            formatPageName={formatPageName}
+          />
 
           <div className="flex-1 p-4  overflow-auto rounded-md mx-2 mb-4">
             {currentPage === "menu" && (
               <div className="grid grid-cols-2 gap-4">
                 <button
-                  className="bg-black cursor-pointer text-white p-4 rounded-lg"
+                  className="bg-black text-lg cursor-pointer text-white p-4 rounded-lg"
                   onClick={() => handleConsultar()}
                 >
                   Consultar en DGII
                 </button>
                 <button
-                  className="bg-black cursor-pointer text-white p-4 rounded-lg"
+                  className="bg-black text-lg cursor-pointer text-white p-4 rounded-lg"
                   onClick={() => goTo("aprobacion")}
                 >
                   Aprobación Comercial
@@ -117,13 +126,13 @@ export function SendDialog({ archivo, view }) {
             {currentPage === "aprobacion" && (
               <div className="grid grid-cols-2 gap-4">
                 <button
-                  className="bg-black cursor-pointer text-white p-4 rounded-lg"
+                  className="bg-black text-lg cursor-pointer text-white p-4 rounded-lg"
                   onClick={() => goTo("dgii")}
                 >
                   DGII
                 </button>
                 <button
-                  className="bg-black cursor-pointer text-white p-4 rounded-lg"
+                  className="bg-black text-lg cursor-pointer text-white p-4 rounded-lg"
                   onClick={() => goTo("cliente")}
                 >
                   Cliente
@@ -134,13 +143,13 @@ export function SendDialog({ archivo, view }) {
             {currentPage === "dgii" && (
               <div className="grid grid-cols-2 gap-4">
                 <button
-                  className="bg-green-600 cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() => handleAceptacion()}
+                  className="bg-green-600 text-lg cursor-pointer text-white p-4 rounded-lg"
+                  onClick={() => handleDgiiAceptar()}
                 >
                   Aceptacion
                 </button>
                 <button
-                  className="bg-red-600 cursor-pointer text-white p-4 rounded-lg"
+                  className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
                   onClick={() => goTo("dgii-rechazo")}
                 >
                   Rechazo
@@ -149,18 +158,28 @@ export function SendDialog({ archivo, view }) {
             )}
 
             {currentPage === "dgii-rechazo" && (
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-4">
                 <button
-                  className="bg-red-600 cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() => {}}
+                  className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
+                  onClick={() =>
+                    handleDgiiRechazo(archivo, "Informaciones Erroneas")
+                  }
                 >
                   Informaciones Erroneas
                 </button>
                 <button
-                  className="bg-red-600 cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() => {}}
+                  className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
+                  onClick={() =>
+                    handleDgiiRechazo(archivo, "Cambio de Productos")
+                  }
                 >
                   Cambio de Productos
+                </button>
+                <button
+                  className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
+                  onClick={() => {}}
+                >
+                  Otro
                 </button>
               </div>
             )}
@@ -168,13 +187,13 @@ export function SendDialog({ archivo, view }) {
             {currentPage === "cliente" && (
               <div className="grid grid-cols-2 gap-4">
                 <button
-                  className="bg-green-600 cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() => handleAceptacion()}
+                  className="bg-green-600 text-lg cursor-pointer text-white p-4 rounded-lg"
+                  onClick={() => handleClienteAceptar(archivo)}
                 >
                   Aceptacion
                 </button>
                 <button
-                  className="bg-red-600 cursor-pointer text-white p-4 rounded-lg"
+                  className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
                   onClick={() => goTo("cliente-rechazo")}
                 >
                   Rechazo
@@ -185,22 +204,35 @@ export function SendDialog({ archivo, view }) {
             {currentPage === "cliente-rechazo" && (
               <div className="grid gap-4">
                 <button
-                  className="bg-red-600 cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() => {}}
+                  className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
+                  onClick={() =>
+                    handleClienteRechazo(archivo, "Informaciones Erroneas")
+                  }
                 >
                   Informaciones Erroneas
                 </button>
+
                 <button
-                  className="bg-red-600 cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() => {}}
+                  className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
+                  onClick={() =>
+                    handleClienteRechazo(archivo, "Cambio de Productos")
+                  }
                 >
                   Cambio de Productos
                 </button>
                 <button
-                  className="bg-red-600 cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() => {}}
+                  className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
+                  onClick={() =>
+                    handleClienteRechazo(archivo, "Transaccion no Reconocida")
+                  }
                 >
                   Transaccion No Reconocida
+                </button>
+                <button
+                  className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
+                  onClick={() => {}}
+                >
+                  Otro
                 </button>
               </div>
             )}
