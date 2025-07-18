@@ -17,7 +17,7 @@ export default function ConsultarRecibidosPage() {
   });
 
   const [date, setDate] = useState({
-    from: getToday(),
+    from: "2000-07-18",
     to: getToday(),
   });
 

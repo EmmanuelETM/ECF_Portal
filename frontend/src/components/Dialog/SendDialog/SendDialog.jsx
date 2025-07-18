@@ -1,26 +1,20 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { Send } from "lucide-react";
-import { DialogTitle } from "./components/DialogTitle";
-import { DialogBreadcrumb } from "./components/DialogBreadCrumb";
+import { DialogTitle } from "../components/DialogTitle";
+import { DialogBreadcrumb } from "../components/DialogBreadCrumb";
+import { DialogForm } from "../components/DialogForm";
 import {
   enviarClienteAC_Aceptacion,
   enviarClienteAC_Rechazo,
   enviarDGIIAC_Aceptacion,
   enviarDGIIAC_Rechazo,
-} from "../../api/envio";
+} from "../../../api/envio";
 
-export function SendDialog({ archivo, view }) {
+export function SendDialog({ archivo }) {
   const dialogRef = useRef(null);
   const [show, setShow] = useState(false);
-  const [open, setOpen] = useState(false);
   const [pageStack, setPageStack] = useState(["menu"]);
   const currentPage = pageStack[pageStack.length - 1];
-
-  useEffect(() => {
-    if (open && view === "emision") {
-      console.log("somshi");
-    }
-  }, [open, view]);
 
   //Navigation
   const goTo = (page) =>
@@ -33,12 +27,11 @@ export function SendDialog({ archivo, view }) {
 
   const openDialog = () => {
     dialogRef.current?.showModal();
-    setOpen(true);
   };
 
   const closeDialog = () => {
     dialogRef.current?.close();
-    setOpen(false);
+    setShow(false);
     setPageStack(["menu"]);
   };
 
@@ -83,8 +76,13 @@ export function SendDialog({ archivo, view }) {
     closeDialog();
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event, fn) => {
     event.preventDefault();
+    const formData = new FormData(event.target);
+    const MotivoRechazo = formData.get("MotivoRechazo");
+    const ecf = archivo.replace(/\.xml$/, "");
+    await fn(ecf, MotivoRechazo);
+    closeDialog();
   };
 
   return (
@@ -112,7 +110,7 @@ export function SendDialog({ archivo, view }) {
 
           <div className="flex-1 p-4  overflow-auto rounded-md mx-2 mb-4">
             {currentPage === "menu" && (
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-4">
                 <button
                   className="bg-black text-lg cursor-pointer text-white p-4 rounded-lg"
                   onClick={() => handleConsultar()}
@@ -129,7 +127,7 @@ export function SendDialog({ archivo, view }) {
             )}
 
             {currentPage === "aprobacion" && (
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-4">
                 <button
                   className="bg-black text-lg cursor-pointer text-white p-4 rounded-lg"
                   onClick={() => goTo("dgii")}
@@ -146,7 +144,7 @@ export function SendDialog({ archivo, view }) {
             )}
 
             {currentPage === "dgii" && (
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-4">
                 <button
                   className="bg-green-600 text-lg cursor-pointer text-white p-4 rounded-lg"
                   onClick={() => handleDgiiAceptar()}
@@ -178,15 +176,24 @@ export function SendDialog({ archivo, view }) {
                 </button>
                 <button
                   className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() => {}}
+                  onClick={() => setShow(!show)}
                 >
                   Otro
                 </button>
+                {show ? (
+                  <DialogForm
+                    handleSubmit={(event) =>
+                      handleSubmit(event, enviarClienteAC_Rechazo)
+                    }
+                  />
+                ) : (
+                  <></>
+                )}
               </div>
             )}
 
             {currentPage === "cliente" && (
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-4">
                 <button
                   className="bg-green-600 text-lg cursor-pointer text-white p-4 rounded-lg"
                   onClick={() => handleClienteAceptar()}
@@ -232,10 +239,11 @@ export function SendDialog({ archivo, view }) {
                   Otros
                 </button>
                 {show ? (
-                  <form onSubmit={handleSubmit}>
-                    <input name="MotivoRechazo" id="" />
-                    <button type="submit"></button>
-                  </form>
+                  <DialogForm
+                    handleSubmit={(event) =>
+                      handleSubmit(event, enviarClienteAC_Rechazo)
+                    }
+                  />
                 ) : (
                   <></>
                 )}

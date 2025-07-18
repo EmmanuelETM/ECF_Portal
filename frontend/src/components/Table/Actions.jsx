@@ -1,5 +1,5 @@
 import { XMLDialog } from "../Dialog/XMLDialog";
-import { SendDialog } from "../Dialog/SendDialog";
+import { SendDialog } from "../Dialog//SendDialog/SendDialog";
 import { LogDialog } from "../Dialog/LogDialog";
 
 export function Actions({ view, archivo }) {
