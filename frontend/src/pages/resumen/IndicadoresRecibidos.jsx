@@ -9,7 +9,7 @@ import {
   CircleDollarSign,
 } from "lucide-react";
 
-import { DropdownButton } from "../../components/Dropdown/DropDown";
+import { DropdownButton } from "../../components/DropDown";
 
 import {
   getToday,

@@ -1,4 +1,5 @@
-import { Menu } from "lucide-react";
+import { Menu, LogOut } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
 
 export function Navbar({ setRoute, setSidebarOpen }) {
   return (
@@ -23,14 +24,57 @@ export function Navbar({ setRoute, setSidebarOpen }) {
                 </button>
               </div>
               <div className="md:space-x-6 justify-end items-center ml-auto flex space-x-3">
-                <div className="justify-center items-center flex relative">
-                  <img className="object-cover btn- h-9 w-9 rounded-full mr-2 bg-gray-300" />
-                </div>
+                <DropDown />
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function DropDown() {
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const handleLogout = async () => {
+    setOpen(true);
+    window.open("https://summasoft.do/acceder/?app=fe", "_self");
+  };
+
+  // Close on outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div className="relative inline-block text-left" ref={dropdownRef}>
+      <div className="justify-center items-center flex relative">
+        <button
+          className="cursor-pointer flex items-center justify-center h-9 w-9 pl-1 rounded-full mr-2 bg-gray-300"
+          onClick={() => setOpen(!open)}
+        >
+          <LogOut />
+        </button>
+      </div>
+      {open && (
+        <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-50">
+          <button
+            className="block w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer"
+            onClick={() => handleLogout()}
+          >
+            Cerrar Sesion
+          </button>
+        </div>
+      )}
     </div>
   );
 }
