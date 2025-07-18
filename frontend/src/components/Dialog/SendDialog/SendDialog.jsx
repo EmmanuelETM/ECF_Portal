@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { Send } from "lucide-react";
 import { DialogTitle } from "../components/DialogTitle";
 import { DialogBreadcrumb } from "../components/DialogBreadCrumb";
-import { DialogForm } from "../components/DialogForm";
+
 import {
   enviarClienteAC_Aceptacion,
   enviarClienteAC_Rechazo,
@@ -10,7 +10,16 @@ import {
   enviarDGIIAC_Rechazo,
 } from "../../../api/envio";
 
-export function SendDialog({ archivo }) {
+import { consultarDGII } from "../../../api/consulta";
+
+import { Menu } from "./components/Menu";
+import { Aprobacion } from "./components/Aprobacion";
+import { DGIITab } from "./components/DGII";
+import { DGIIRechazo } from "./components/DGIIRechazo";
+import { ClienteTab } from "./components/Cliente";
+import { ClienteRechazo } from "./components/ClienteRechazo";
+
+export function SendDialog({ archivo, view }) {
   const dialogRef = useRef(null);
   const [show, setShow] = useState(false);
   const [pageStack, setPageStack] = useState(["menu"]);
@@ -40,16 +49,21 @@ export function SendDialog({ archivo }) {
       menu: "Menú",
       aprobacion: "Aprobacion Comercial",
       cliente: "Cliente",
-      "cliente-rechazo": "Rechazo",
+      clienteRechazo: "Rechazo",
       dgii: "DGII",
-      "dgii-rechazo": "Rechazo",
-      "ecf-cliente": "ECF Cliente",
+      dgiiRechazo: "Rechazo",
     };
     return names[page] || page;
   };
 
   const handleConsultar = () => {
-    console.log("consultar");
+    const ecf = archivo.replace(/\.xml$/, "");
+    let tipo;
+
+    if (view === "emision") tipo = "emitidos";
+    else tipo = "recibidos";
+
+    consultarDGII(ecf, tipo);
   };
 
   const handleDgiiAceptar = async () => {
@@ -108,146 +122,40 @@ export function SendDialog({ archivo }) {
             formatPageName={formatPageName}
           />
 
-          <div className="flex-1 p-4  overflow-auto rounded-md mx-2 mb-4">
+          <div className="flex-1 p-4 overflow-auto rounded-md mx-2 mb-4">
             {currentPage === "menu" && (
-              <div className="grid gap-4">
-                <button
-                  className="bg-black text-lg cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() => handleConsultar()}
-                >
-                  Consultar en DGII
-                </button>
-                <button
-                  className="bg-black text-lg cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() => goTo("aprobacion")}
-                >
-                  Aprobación Comercial
-                </button>
-              </div>
+              <Menu handleConsultar={handleConsultar} goTo={goTo} />
             )}
 
-            {currentPage === "aprobacion" && (
-              <div className="grid gap-4">
-                <button
-                  className="bg-black text-lg cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() => goTo("dgii")}
-                >
-                  DGII
-                </button>
-                <button
-                  className="bg-black text-lg cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() => goTo("cliente")}
-                >
-                  Cliente
-                </button>
-              </div>
-            )}
+            {currentPage === "aprobacion" && <Aprobacion goTo={goTo} />}
 
             {currentPage === "dgii" && (
-              <div className="grid gap-4">
-                <button
-                  className="bg-green-600 text-lg cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() => handleDgiiAceptar()}
-                >
-                  Aceptacion
-                </button>
-                <button
-                  className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() => goTo("dgii-rechazo")}
-                >
-                  Rechazo
-                </button>
-              </div>
+              <DGIITab handleDgiiAceptar={handleDgiiAceptar} goTo={goTo} />
             )}
 
-            {currentPage === "dgii-rechazo" && (
-              <div className="grid gap-4">
-                <button
-                  className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() => handleDgiiRechazo("Informaciones Erroneas")}
-                >
-                  Informaciones Erroneas
-                </button>
-                <button
-                  className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() => handleDgiiRechazo("Cambio de Productos")}
-                >
-                  Cambio de Productos
-                </button>
-                <button
-                  className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() => setShow(!show)}
-                >
-                  Otro
-                </button>
-                {show ? (
-                  <DialogForm
-                    handleSubmit={(event) =>
-                      handleSubmit(event, enviarClienteAC_Rechazo)
-                    }
-                  />
-                ) : (
-                  <></>
-                )}
-              </div>
+            {currentPage === "dgiiRechazo" && (
+              <DGIIRechazo
+                handleDgiiRechazo={handleDgiiRechazo}
+                handleSubmit={handleSubmit}
+                setShow={setShow}
+                show={show}
+              />
             )}
 
             {currentPage === "cliente" && (
-              <div className="grid gap-4">
-                <button
-                  className="bg-green-600 text-lg cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() => handleClienteAceptar()}
-                >
-                  Aceptacion
-                </button>
-                <button
-                  className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() => goTo("cliente-rechazo")}
-                >
-                  Rechazo
-                </button>
-              </div>
+              <ClienteTab
+                handleClienteAceptar={handleClienteAceptar}
+                goTo={goTo}
+              />
             )}
 
-            {currentPage === "cliente-rechazo" && (
-              <div className="grid gap-4">
-                <button
-                  className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() => handleClienteRechazo("Informaciones Erroneas")}
-                >
-                  Informaciones Erroneas
-                </button>
-
-                <button
-                  className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() => handleClienteRechazo("Cambio de Productos")}
-                >
-                  Cambio de Productos
-                </button>
-                <button
-                  className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() =>
-                    handleClienteRechazo("Transaccion no Reconocida")
-                  }
-                >
-                  Transaccion No Reconocida
-                </button>
-                <button
-                  className="bg-red-600 text-lg cursor-pointer text-white p-4 rounded-lg"
-                  onClick={() => setShow(!show)}
-                >
-                  Otros
-                </button>
-                {show ? (
-                  <DialogForm
-                    handleSubmit={(event) =>
-                      handleSubmit(event, enviarClienteAC_Rechazo)
-                    }
-                  />
-                ) : (
-                  <></>
-                )}
-              </div>
+            {currentPage === "clienteRechazo" && (
+              <ClienteRechazo
+                handleClienteRechazo={handleClienteRechazo}
+                handleSubmit={handleSubmit}
+                setShow={setShow}
+                show={show}
+              />
             )}
           </div>
         </div>

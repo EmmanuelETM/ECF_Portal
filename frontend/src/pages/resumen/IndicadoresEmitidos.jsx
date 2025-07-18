@@ -60,7 +60,7 @@ export default function IndicadoresEmitidosPage() {
   return (
     <>
       <div className="flex items-center justify-between mb-4">
-        <Title text={"Documentos Recibidos"} />
+        <Title text={"Documentos Emitidos"} />
         <DropdownButton
           options={[
             { label: "Hoy", fn: Today },

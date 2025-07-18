@@ -1,12 +1,12 @@
+import { useEffect, useState } from "react";
 import { Sidebar } from "./components/Sidebar/Sidebar";
+import { Navbar } from "./components/Navbar";
 import StartPage from "./pages/StartPage";
 import ConfigPage from "./pages/ConfiguracionPage";
 import IndicadoresEmitidos from "./pages/resumen/IndicadoresEmitidos";
 import IndicadoresRecibidos from "./pages/resumen/IndicadoresRecibidos";
 import ConsultarEmitidosPage from "./pages/consultas/ConsultarEmitidos";
 import ConsultarRecibidosPage from "./pages/consultas/ConsultarRecibidos";
-import { useState } from "react";
-import { Navbar } from "./components/Navbar";
 
 function App() {
   const [route, setRoute] = useState("start");
@@ -22,14 +22,33 @@ function App() {
     config: <ConfigPage />,
   };
 
+  //hash navigation
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = location.hash.replace("#", "");
+      setRoute(hash || "start");
+    };
+
+    handleHashChange();
+
+    window.addEventListener("hashchange", handleHashChange);
+
+    return window.removeEventListener("hashchange", handleHashChange);
+  }, [setRoute]);
+
+  const navigate = (newRoute) => {
+    setRoute(newRoute);
+    location.hash = newRoute;
+  };
+
   return (
     <div className="h-screen flex flex-col overflow-hidden">
-      <Navbar setRoute={setRoute} setSidebarOpen={setSidebarOpen} />
+      <Navbar setRoute={navigate} setSidebarOpen={setSidebarOpen} />
 
       <div className="flex flex-1 overflow-hidden">
         <Sidebar
           route={route}
-          setRoute={setRoute}
+          setRoute={navigate}
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
           sidebarCollapsed={sidebarCollapsed}

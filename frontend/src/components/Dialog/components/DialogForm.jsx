@@ -10,7 +10,7 @@ export function DialogForm({ handleSubmit }) {
         autoFocus={true}
         name="MotivoRechazo"
         id="MotivoRechazo"
-        className="w-full p-2 border rounded-lg"
+        className="w-full min-h-20 p-2 border rounded-lg"
       />
       <button
         className="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 cursor-pointer p-2 rounded-lg"
