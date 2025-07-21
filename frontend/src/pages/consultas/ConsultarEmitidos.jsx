@@ -1,6 +1,6 @@
 import { TableControls } from "../../components/Table/TableControls";
 import { Table } from "../../components/Table/Table";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { filterData } from "../../lib/processData";
 import { getListaECFEmitidos } from "../../api/emitidos";
 import { getToday } from "../../lib/date-helpers";
@@ -23,6 +23,17 @@ export default function ConsultarEmitidosPage() {
 
   const [sortOrder, setSortOrder] = useState("desc");
 
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const filteredData = useMemo(() => {
+    return filterData(data, sortOrder, filters);
+  }, [data, sortOrder, filters]);
+
+  //Set page back to 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filters, sortOrder]);
+
   const handleSearchClick = async () => {
     setLoading(true);
     const data = await getListaECFEmitidos(date.from, date.to);
@@ -37,11 +48,8 @@ export default function ConsultarEmitidosPage() {
       Razon: "",
       Tipo: "Todos",
     });
+    setCurrentPage(1);
   };
-
-  const filteredData = useMemo(() => {
-    return filterData(data, sortOrder, filters);
-  }, [data, sortOrder, filters]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -52,6 +60,7 @@ export default function ConsultarEmitidosPage() {
         setDate={setDate}
         filters={filters}
         setFilters={setFilters}
+        setCurrentPage={setCurrentPage}
         handleSearchClick={handleSearchClick}
         handleLimpiarClick={handleLimpiarClick}
       />
@@ -60,6 +69,8 @@ export default function ConsultarEmitidosPage() {
         data={filteredData}
         sortOrder={sortOrder}
         setSortOrder={setSortOrder}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
         loading={loading}
         view="emision"
       />

@@ -1,13 +1,20 @@
-import { ArrowUp, ArrowDown, ChevronRight, ChevronLeft } from "lucide-react";
+import { ArrowUp, ArrowDown } from "lucide-react";
 import { Actions } from "./Actions";
 import { Loading } from "../Loading";
 import { formatMonto } from "../../lib/utils";
 import { Pagination } from "./Pagination";
 
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 
-export function Table({ data, sortOrder, setSortOrder, loading, view }) {
-  const [currentPage, setCurrentPage] = useState(1);
+export function Table({
+  data,
+  sortOrder,
+  setSortOrder,
+  currentPage,
+  setCurrentPage,
+  loading,
+  view,
+}) {
   const pageSize = 10;
   const totalPages = Math.ceil(data.length / pageSize);
 
@@ -101,7 +108,6 @@ export function Table({ data, sortOrder, setSortOrder, loading, view }) {
         </table>
       </div>
 
-      {/* Footer stays outside scroll area */}
       {!loading && totalPages > 1 && (
         <Pagination
           goToPage={goToPage}

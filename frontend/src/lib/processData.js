@@ -1,13 +1,14 @@
 const sortData = (data, sortOrder) => {
   return [...data].sort((a, b) => {
-    const aFecha = a["FechaEmision"];
-    const bFecha = b["FechaEmision"];
+    const parseDate = (str) => {
+      const [day, month, year] = str.split("-");
+      return new Date(`${year}-${month}-${day}`);
+    };
 
-    if (sortOrder === "asc") {
-      return aFecha < bFecha ? -1 : aFecha > bFecha ? 1 : 0;
-    } else {
-      return bFecha < aFecha ? -1 : bFecha > aFecha ? 1 : 0;
-    }
+    const dateA = parseDate(a["FechaEmision"]);
+    const dateB = parseDate(b["FechaEmision"]);
+
+    return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
   });
 };
 
