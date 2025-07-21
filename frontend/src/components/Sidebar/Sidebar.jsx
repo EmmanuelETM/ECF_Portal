@@ -1,16 +1,14 @@
 import {
-  Send,
-  CheckCheck,
   Settings,
   Home,
-  LogOut,
+  FileChartColumn,
+  FileChartColumnIncreasing,
   FileOutput,
-  FileInput,
+  FileCheck2,
   Menu,
-  X,
 } from "lucide-react";
 import { NavLink } from "./Navlink";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export function Sidebar({
   route,
@@ -20,29 +18,47 @@ export function Sidebar({
   sidebarCollapsed,
   setSidebarCollapsed,
 }) {
+  const hasInitialized = useRef(false);
+
   useEffect(() => {
+    const savedCollapsed = localStorage.getItem("sidebarCollapsed");
+
+    if (savedCollapsed !== null) {
+      setSidebarCollapsed(savedCollapsed === "true");
+    } else {
+      const width = window.innerWidth;
+
+      if (width < 640) {
+        setSidebarCollapsed(false);
+      } else if (width >= 640 && width <= 800) {
+        setSidebarCollapsed(true);
+      } else {
+        setSidebarCollapsed(false);
+      }
+    }
+
     const handleSize = () => {
       const width = window.innerWidth;
 
       if (width < 640) {
-        // Mobile: sidebar closed & expanded (not collapsed)
         setSidebarOpen(false);
-        setSidebarCollapsed(false);
-      } else if (width >= 640 && width <= 800) {
-        // Medium: sidebar open & collapsed
-        setSidebarOpen(true);
-        setSidebarCollapsed(true);
       } else {
-        // Large: sidebar open & expanded
         setSidebarOpen(true);
-        setSidebarCollapsed(false);
       }
     };
 
-    handleSize(); // Run initially
+    handleSize();
     window.addEventListener("resize", handleSize);
     return () => window.removeEventListener("resize", handleSize);
-  }, [setSidebarOpen, setSidebarCollapsed]);
+  }, [setSidebarCollapsed, setSidebarOpen]);
+
+  useEffect(() => {
+    if (hasInitialized.current) {
+      localStorage.setItem("sidebarCollapsed", sidebarCollapsed.toString());
+    } else {
+      hasInitialized.current = true;
+    }
+  }, [sidebarCollapsed]);
 
   return (
     <>
@@ -56,7 +72,6 @@ export function Sidebar({
         onClick={() => setSidebarOpen(false)}
       />
 
-      {/* Sidebar Container */}
       <div
         className={`
           fixed sm:static top-0 left-0 h-full z-30 transition-all duration-300 ease-in-out bg-gray-100 border-r border-gray-300
@@ -65,13 +80,11 @@ export function Sidebar({
           flex flex-col
         `}
       >
-        {/* Top Section */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-gray-300">
           {!sidebarCollapsed && (
             <h1 className="text-lg font-semibold text-gray-700">Dashboard</h1>
           )}
 
-          {/* Collapse Button only on medium+ screens */}
           <button
             className="hidden sm:block p-1 rounded hover:bg-gray-200 cursor-pointer"
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
@@ -80,7 +93,6 @@ export function Sidebar({
           </button>
         </div>
 
-        {/* Navigation Links */}
         <ul className="flex-grow overflow-y-auto py-4 px-2 space-y-1">
           <NavLink
             text="Inicio"
@@ -100,7 +112,7 @@ export function Sidebar({
 
           <NavLink
             text="Emitidos"
-            Icon={FileOutput}
+            Icon={FileChartColumnIncreasing}
             isCollapsed={sidebarCollapsed}
             isActive={route === "indicadoresEmitidos"}
             onClick={() => {
@@ -110,7 +122,7 @@ export function Sidebar({
           />
           <NavLink
             text="Recibidos"
-            Icon={FileInput}
+            Icon={FileChartColumn}
             isCollapsed={sidebarCollapsed}
             isActive={route === "indicadoresRecibidos"}
             onClick={() => {
@@ -126,7 +138,7 @@ export function Sidebar({
 
           <NavLink
             text="Emitidos"
-            Icon={Send}
+            Icon={FileOutput}
             isCollapsed={sidebarCollapsed}
             isActive={route === "consultarEmitidos"}
             onClick={() => {
@@ -136,7 +148,7 @@ export function Sidebar({
           />
           <NavLink
             text="Recibidos"
-            Icon={CheckCheck}
+            Icon={FileCheck2}
             isCollapsed={sidebarCollapsed}
             isActive={route === "consultarRecibidos"}
             onClick={() => {

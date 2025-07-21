@@ -1,5 +1,6 @@
 import { Menu, LogOut } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import { useAuth } from "../auth/use-auth";
 
 export function Navbar({ setRoute, setSidebarOpen }) {
   return (
@@ -37,13 +38,13 @@ export function Navbar({ setRoute, setSidebarOpen }) {
 function DropDown() {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const { setToken } = useAuth();
 
   const handleLogout = async () => {
-    setOpen(true);
+    setToken(null);
     window.open("https://summasoft.do/acceder/?app=fe", "_self");
   };
 
-  // Close on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {

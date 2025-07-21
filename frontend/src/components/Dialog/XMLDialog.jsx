@@ -18,10 +18,12 @@ export function XMLDialog({ archivo, view }) {
   useEffect(() => {
     if (open) {
       setLoading(true);
+      setError(false);
       showXml(archivo, view)
         .then((file) => {
           setFile(file);
           setLoading(false);
+          setError(false);
         })
         .catch((err) => {
           setError(true);

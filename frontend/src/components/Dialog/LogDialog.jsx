@@ -13,21 +13,23 @@ export function LogDialog({ archivo }) {
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (open) {
       setLoading(true);
+      setError(false);
       showLogs(archivo)
         .then((data) => {
           setFile(data);
-          setLoading(false);
+          setError(false);
         })
         .catch((err) => {
-          setError(true);
-          setLoading(false);
           console.error("Error fetching logs: ", err);
-        });
+          setError(true);
+          setFile("");
+        })
+        .finally(() => setLoading(false));
     }
   }, [open, archivo]);
 
@@ -40,6 +42,7 @@ export function LogDialog({ archivo }) {
     dialogRef.current?.close();
     setOpen(false);
   };
+
   return (
     <>
       <button
@@ -57,6 +60,7 @@ export function LogDialog({ archivo }) {
       >
         <div className="flex flex-col h-full bg-white rounded-lg overflow-hidden">
           <DialogTitle title={archivo} closeDialog={closeDialog} />
+
           {loading ? (
             <div className="flex flex-1 items-center justify-center bg-white">
               <Loading text={"Logs"} />
@@ -70,6 +74,7 @@ export function LogDialog({ archivo }) {
                   {file}
                 </pre>
               </div>
+
               {file && (
                 <div className="w-full flex justify-end p-2 pr-4 mb-2 gap-2">
                   <Button

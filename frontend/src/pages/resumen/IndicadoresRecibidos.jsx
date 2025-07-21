@@ -59,7 +59,7 @@ export default function IndicadoresEmitidosPage() {
 
   return (
     <>
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex justify-between mb-4">
         <Title text={"Documentos Recibidos"} />
         <DropdownButton
           options={[
