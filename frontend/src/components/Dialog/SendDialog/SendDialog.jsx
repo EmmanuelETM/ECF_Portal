@@ -56,14 +56,17 @@ export function SendDialog({ archivo, view }) {
     return names[page] || page;
   };
 
-  const handleConsultar = () => {
+  const handleConsultar = async () => {
     const ecf = archivo.replace(/\.xml$/, "");
     let tipo;
 
     if (view === "emision") tipo = "emitidos";
     else tipo = "recibidos";
 
-    consultarDGII(ecf, tipo);
+    const found = await consultarDGII(ecf, tipo);
+    if (!found) {
+      console.log("ECF no encontrado");
+    }
   };
 
   const handleDgiiAceptar = async () => {

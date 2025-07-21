@@ -6,12 +6,14 @@ import { download } from "../../lib/download";
 import { Button } from "../Button";
 import { Loading } from "../Loading";
 import { DialogTitle } from "./components/DialogTitle";
+import { ErrorMessage } from "../Error";
 
 export function XMLDialog({ archivo, view }) {
   const dialogRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -21,7 +23,11 @@ export function XMLDialog({ archivo, view }) {
           setFile(file);
           setLoading(false);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          setError(true);
+          setLoading(false);
+          console.error("Failed to fetch xml: ", err);
+        });
     }
   }, [open, archivo, view]);
 
@@ -57,6 +63,8 @@ export function XMLDialog({ archivo, view }) {
             <div className="flex flex-1 items-center justify-center bg-white">
               <Loading text={"xml"} />
             </div>
+          ) : error ? (
+            <ErrorMessage message="No se encontró el XML" />
           ) : (
             <>
               <div className="flex-1 p-4 overflow-auto bg-stone-200 border text-left border-stone-400 rounded-md mx-4 mb-4">

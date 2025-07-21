@@ -73,7 +73,7 @@ export function Sidebar({
 
           {/* Collapse Button only on medium+ screens */}
           <button
-            className="hidden sm:block p-1 rounded hover:bg-gray-200"
+            className="hidden sm:block p-1 rounded hover:bg-gray-200 cursor-pointer"
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
           >
             <Menu size={20} />

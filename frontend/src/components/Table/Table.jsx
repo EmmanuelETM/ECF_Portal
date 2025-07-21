@@ -8,7 +8,7 @@ import { useState, useMemo } from "react";
 
 export function Table({ data, sortOrder, setSortOrder, loading, view }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 5;
+  const pageSize = 10;
   const totalPages = Math.ceil(data.length / pageSize);
 
   const paginatedData = useMemo(() => {

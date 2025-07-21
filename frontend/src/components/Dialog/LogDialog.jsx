@@ -6,12 +6,14 @@ import { showLogs } from "../../lib/files";
 import { Loading } from "../Loading";
 import { Button } from "../Button";
 import { download } from "../../lib/download";
+import { ErrorMessage } from "../Error";
 
 export function LogDialog({ archivo }) {
   const dialogRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(true);
 
   useEffect(() => {
     if (open) {
@@ -21,7 +23,11 @@ export function LogDialog({ archivo }) {
           setFile(data);
           setLoading(false);
         })
-        .catch((err) => console.log("Error fetching logs: ", err));
+        .catch((err) => {
+          setError(true);
+          setLoading(false);
+          console.error("Error fetching logs: ", err);
+        });
     }
   }, [open, archivo]);
 
@@ -53,8 +59,10 @@ export function LogDialog({ archivo }) {
           <DialogTitle title={archivo} closeDialog={closeDialog} />
           {loading ? (
             <div className="flex flex-1 items-center justify-center bg-white">
-              <Loading text={"xml"} />
+              <Loading text={"Logs"} />
             </div>
+          ) : error ? (
+            <ErrorMessage message="No se encontró el Log" />
           ) : (
             <>
               <div className="flex-1 p-4 overflow-auto bg-stone-200 border text-left border-stone-400 rounded-md mx-4 mb-4">

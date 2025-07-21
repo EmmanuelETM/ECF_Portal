@@ -6,8 +6,8 @@ export async function consultarDGII(ecf, tipo) {
   const response = await fetch(endpoint);
   const text = await response.text();
   if (!response.ok) {
-    alert(`Error: ${text}`);
-    return;
+    return false;
   }
   window.open(text, "_blank", "noopener,noreferrer");
+  return true;
 }
