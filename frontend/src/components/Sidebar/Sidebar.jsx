@@ -18,45 +18,40 @@ export function Sidebar({
   sidebarCollapsed,
   setSidebarCollapsed,
 }) {
-  const hasInitialized = useRef(false);
+  const wasMobile = useRef(null); // track last breakpoint
 
   useEffect(() => {
-    const savedCollapsed = localStorage.getItem("sidebarCollapsed");
-
-    if (savedCollapsed !== null) {
-      setSidebarCollapsed(savedCollapsed === "true");
-    } else {
+    const handleResize = () => {
       const width = window.innerWidth;
+      const isMobile = width < 640;
 
-      if (width < 640) {
+      setSidebarOpen(!isMobile);
+
+      if (isMobile) {
         setSidebarCollapsed(false);
-      } else if (width >= 640 && width <= 800) {
-        setSidebarCollapsed(true);
       } else {
-        setSidebarCollapsed(false);
+        if (wasMobile.current === true || wasMobile.current === null) {
+          const saved = localStorage.getItem("sidebarCollapsed");
+          if (saved !== null) {
+            setSidebarCollapsed(saved === "true");
+          } else {
+            setSidebarCollapsed(false); // default
+          }
+        }
       }
-    }
 
-    const handleSize = () => {
-      const width = window.innerWidth;
-
-      if (width < 640) {
-        setSidebarOpen(false);
-      } else {
-        setSidebarOpen(true);
-      }
+      wasMobile.current = isMobile;
     };
 
-    handleSize();
-    window.addEventListener("resize", handleSize);
-    return () => window.removeEventListener("resize", handleSize);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [setSidebarCollapsed, setSidebarOpen]);
 
   useEffect(() => {
-    if (hasInitialized.current) {
+    const width = window.innerWidth;
+    if (width >= 640) {
       localStorage.setItem("sidebarCollapsed", sidebarCollapsed.toString());
-    } else {
-      hasInitialized.current = true;
     }
   }, [sidebarCollapsed]);
 

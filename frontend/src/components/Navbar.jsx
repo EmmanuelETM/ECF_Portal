@@ -1,6 +1,6 @@
 import { Menu, LogOut } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
-import { useAuth } from "../auth/use-auth";
+import { useAuth } from "../auth/useAuth";
 
 export function Navbar({ setRoute, setSidebarOpen }) {
   return (
