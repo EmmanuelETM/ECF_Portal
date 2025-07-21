@@ -16,7 +16,7 @@ export default function ConfigPage() {
   };
 
   const handleClick = () => {
-    console.log(settings);
+    console.log("guardar click");
   };
 
   return (

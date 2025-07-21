@@ -3,7 +3,7 @@ export function NavLink({ text, Icon, onClick, isActive, isCollapsed }) {
     <li
       className={`group cursor-pointer flex items-center transition-colors duration-200 
         ${isCollapsed ? "justify-center px-0" : "justify-start px-3"} 
-        ${isActive ? "bg-green-600 text-white" : "text-gray-700 hover:bg-gray-200"} 
+        ${isActive ? "bg-green-600 text-white" : "text-gray-700 hover:bg-gray-300"} 
         py-2 rounded-lg`}
       onClick={onClick}
     >
