@@ -42,6 +42,7 @@ function DropDown() {
 
   const handleLogout = async () => {
     setToken(null);
+    localStorage.removeItem("token");
     window.open("https://summasoft.do/acceder/?app=fe", "_self");
   };
 

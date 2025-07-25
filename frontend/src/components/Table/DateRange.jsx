@@ -6,6 +6,7 @@ export function DateRange({ date, setDate }) {
       <label className="flex flex-col gap-2">
         <p className="font-semibold">Desde:</p>
         <input
+          name="desde"
           type="date"
           defaultValue={getToday()}
           onChange={(e) => setDate({ ...date, from: e.target.value })}
@@ -15,6 +16,7 @@ export function DateRange({ date, setDate }) {
       <label className="flex flex-col gap-2">
         <p className="font-semibold">Hasta:</p>
         <input
+          name="hasta"
           type="date"
           defaultValue={getToday()}
           onChange={(e) => setDate({ ...date, to: e.target.value })}
