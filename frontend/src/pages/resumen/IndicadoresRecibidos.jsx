@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { useFetch } from "../../hooks/use-fetch";
 import { Indicator } from "../../components/Indicator";
 
 import {
@@ -25,36 +26,62 @@ import { formatMonto } from "../../lib/utils";
 
 import SkeletonPage from "../SkeletonPage";
 import { Title } from "../../components/Title";
-import { getIndicadoresRecibidos } from "../../api/recibidos";
 
 export default function IndicadoresEmitidosPage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const { resumen, porTipoDeComprobante } = data;
 
+  const authFetch = useFetch();
+
+  const getIndicadoresRecibidos = useCallback(
+    async (desde, hasta) => {
+      const params = new URLSearchParams();
+
+      if (desde) params.append("FechaEmisionDesde", desde);
+      if (hasta) params.append("FechaEmisionHasta", hasta);
+
+      const query = params.toString();
+      const url = `/recibidos/indicadores${query ? `?${query}` : ""}`;
+
+      const response = await authFetch(url);
+      return response.json();
+    },
+    [authFetch]
+  );
+
   useEffect(() => {
-    const fetchData = () => {
-      setLoading(true);
-      getIndicadoresRecibidos("2000-01-01", getToday())
-        .then((data) => {
-          setData(data);
-          setLoading(false);
-        })
-        .catch((err) => console.log("Error fetching: ", err));
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const data = await getIndicadoresRecibidos("2000-01-01", getToday());
+        setData(data);
+      } catch (err) {
+        console.error("Error fetching:", err);
+      } finally {
+        setLoading(false);
+      }
     };
+
     fetchData();
-  }, []);
+  }, [getIndicadoresRecibidos]);
 
   const handleSelect = async (fn) => {
     const { from, to } = fn();
-    let result;
     setLoading(true);
 
-    if (from && to) result = await getIndicadoresRecibidos(from, to);
-    else result = await getIndicadoresRecibidos();
+    try {
+      const result =
+        from && to
+          ? await getIndicadoresRecibidos(from, to)
+          : await getIndicadoresRecibidos();
 
-    setData(result);
-    setLoading(false);
+      setData(result);
+    } catch (err) {
+      console.error("Error fetching:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

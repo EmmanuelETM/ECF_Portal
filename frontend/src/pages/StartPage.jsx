@@ -1,6 +1,6 @@
-import { Title } from "../components/Title";
 import { useEffect, useState } from "react";
-import { getConfiguracion } from "../api/configuracion";
+import { useFetch } from "../hooks/use-fetch";
+import { useAuth } from "../hooks/use-auth";
 
 export default function StartPage() {
   const [data, setData] = useState({
@@ -11,22 +11,40 @@ export default function StartPage() {
     Telefono: "",
   });
 
+  const authFetch = useFetch();
+  const { token } = useAuth();
+
   useEffect(() => {
-    getConfiguracion()
-      .then((response) => response.json())
-      .then((data) => {
-        setData({
-          ...data.EMISOR,
-        });
-      })
-      .catch((err) => console.error("Error: ", err));
-  }, []);
+    if (!token) return;
+
+    async function fetchConfiguracion() {
+      try {
+        const response = await authFetch("configuracion");
+        const data = await response.json();
+        setData({ ...(data?.EMISOR || {}) });
+      } catch (err) {
+        console.error("Error al obtener configuración:", err);
+      }
+    }
+
+    fetchConfiguracion();
+  }, [authFetch, token]);
 
   return (
     <>
-      <Title text={"Inicio"} />
-      <p>{data.Correo}</p>
-      <p>{data.Direccion}</p>
+      <h1 className="font-semibold text-lg">{data.RazonSocial}</h1>
+      <p className="pt-2">
+        <span className="font-semibold">RNC</span>: {data.RNC}
+      </p>
+      <p className="pt-2">
+        <span className="font-semibold">Correo</span>: {data.Correo}
+      </p>
+      <p className="pt-2">
+        <span className="font-semibold">Direccion</span>: {data.Direccion}
+      </p>
+      <p className="pt-2">
+        <span className="font-semibold">Telefono</span>: {data.Telefono}
+      </p>
     </>
   );
 }

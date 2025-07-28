@@ -1,8 +1,8 @@
 import { TableControls } from "../../components/Table/TableControls";
 import { Table } from "../../components/Table/Table";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
+import { useFetch } from "../../hooks/use-fetch";
 import { filterData } from "../../lib/processData";
-import { getListaECFRecibidos } from "../../api/recibidos";
 import { getToday } from "../../lib/date-helpers";
 import { Title } from "../../components/Title";
 
@@ -16,16 +16,17 @@ export default function ConsultarRecibidosPage() {
     Tipo: "Todos",
   });
 
+  const authFetch = useFetch();
+
   const [date, setDate] = useState({
     from: getToday(),
     to: getToday(),
   });
 
   const [sortOrder, setSortOrder] = useState("desc");
-
   const [currentPage, setCurrentPage] = useState(1);
 
-  //Set page back to 1 when filters change
+  // Reset to page 1 when filters or sort order change
   useEffect(() => {
     setCurrentPage(1);
   }, [filters, sortOrder]);
@@ -34,11 +35,33 @@ export default function ConsultarRecibidosPage() {
     return filterData(data, sortOrder, filters);
   }, [data, sortOrder, filters]);
 
+  // Memoized and updated to use authFetch
+  const getListaECFRecibidos = useCallback(
+    async (desde, hasta) => {
+      const params = new URLSearchParams();
+      if (desde) params.append("FechaEmisionDesde", desde);
+      if (hasta) params.append("FechaEmisionHasta", hasta);
+
+      const query = params.toString();
+      const url = `/recibidos/consulta${query ? `?${query}` : ""}`;
+
+      const response = await authFetch(url);
+      return response.json();
+    },
+    [authFetch]
+  );
+
+  // Use getListaECFRecibidos with loading handling
   const handleSearchClick = async () => {
     setLoading(true);
-    const data = await getListaECFRecibidos(date.from, date.to);
-    setData(data);
-    setLoading(false);
+    try {
+      const data = await getListaECFRecibidos(date.from, date.to);
+      setData(data);
+    } catch (err) {
+      console.error("Error fetching recibidos:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleLimpiarClick = () => {

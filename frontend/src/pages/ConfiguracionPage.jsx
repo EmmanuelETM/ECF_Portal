@@ -1,46 +1,63 @@
 import { Title } from "../components/Title";
 import { Setting } from "../components/Setting";
 import { useEffect, useState } from "react";
-import { getConfiguracion, patchConfiguracion } from "../api/configuracion";
+import { useFetch } from "../hooks/use-fetch";
 
 export default function ConfigPage() {
   const [settings, setSettings] = useState({
-    Emision: { DGII: false, Cliente: false, Notificar: false },
-    Recepcion: { Notificar: false, Tipos: "" },
+    EMISION: { DGII: "", Cliente: "", Notificar: "" },
+    RECEPCION: { Notificar: "", Tipos: "" },
   });
 
-  console.log(settings);
+  const authFetch = useFetch();
+
+  async function patchConfiguracion(section, key, value) {
+    return await authFetch("/configuracion", {
+      method: "POST",
+      body: JSON.stringify({
+        [section]: {
+          [key]: value,
+        },
+      }),
+    });
+  }
 
   useEffect(() => {
-    getConfiguracion()
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        const emision = data?.EMISION || {};
-        const recepcion = data?.RECEPCION || {};
+    async function fetchConfiguracion() {
+      try {
+        const response = await authFetch("/configuracion");
+        const data = await response.json();
 
-        // Normalizamos booleanos
-        const normalizeBoolean = (value) =>
-          typeof value === "string"
-            ? value.toLowerCase() === "True"
-            : !!value.toLowerCase();
+        console.log(data);
+
+        const EMISION = data?.EMISION || {};
+        const RECEPCION = data?.RECEPCION || {};
+
+        const normalizeBoolean = (value) => {
+          if (typeof value === "string") {
+            return value.toLowerCase() === "true";
+          }
+          return Boolean(value);
+        };
 
         setSettings({
-          Emision: {
-            DGII: normalizeBoolean(emision.DGII),
-            Cliente: normalizeBoolean(emision.Cliente),
-            Notificar: normalizeBoolean(emision.Notificar),
+          EMISION: {
+            DGII: normalizeBoolean(EMISION.DGII),
+            Cliente: normalizeBoolean(EMISION.Cliente),
+            Notificar: normalizeBoolean(EMISION.Notificar),
           },
-          Recepcion: {
-            Notificar: normalizeBoolean(recepcion.Notificar),
-            Tipos: recepcion.TIPOS || "",
+          RECEPCION: {
+            Notificar: normalizeBoolean(RECEPCION.Notificar),
+            Tipos: RECEPCION.TIPOS || RECEPCION.Tipos || "",
           },
         });
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error al obtener la configuración:", error);
-      });
-  }, []);
+      }
+    }
+
+    fetchConfiguracion();
+  }, [authFetch]);
 
   const toggleSettings = async (section, key) => {
     setSettings((prev) => {
@@ -57,8 +74,7 @@ export default function ConfigPage() {
       };
 
       // patch settings
-      patchConfiguracion(section, key, newValue === true ? "True" : "False");
-
+      patchConfiguracion(section, key, newValue === true ? true : false);
       return updated;
     });
   };
@@ -72,24 +88,24 @@ export default function ConfigPage() {
           description={
             "Si el comprobante es valido, enviarlo inmediatamente a DGII"
           }
-          enabled={settings.Emision.DGII}
-          onToggle={() => toggleSettings("Emision", "DGII")}
+          enabled={settings.EMISION.DGII}
+          onToggle={() => toggleSettings("EMISION", "DGII")}
         />
         <Setting
           title={"Enviar al Cliente automaticamente"}
           description={
             "Si el comprobante es aceptado por DGII, reenviar inmediatamente al Cliente."
           }
-          enabled={settings.Emision.Cliente}
-          onToggle={() => toggleSettings("Emision", "Cliente")}
+          enabled={settings.EMISION.Cliente}
+          onToggle={() => toggleSettings("EMISION", "Cliente")}
         />
         <Setting
           title={"Notificarme cuando reciba comprobante"}
           description={
             "Recibir un correo cuando se reciba un comprobante por parte de algun Cliente."
           }
-          enabled={settings.Emision.Notificar}
-          onToggle={() => toggleSettings("Emision", "Notificar")}
+          enabled={settings.EMISION.Notificar}
+          onToggle={() => toggleSettings("EMISION", "Notificar")}
         />
       </div>
     </>

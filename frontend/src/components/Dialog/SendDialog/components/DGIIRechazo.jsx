@@ -1,8 +1,8 @@
-import { enviarDGIIAC_Rechazo } from "../../../../api/envio";
 import { DialogForm } from "../../components/DialogForm";
 
 export function DGIIRechazo({
   handleDgiiRechazo,
+  fn,
   setShow,
   show,
   handleSubmit,
@@ -28,9 +28,7 @@ export function DGIIRechazo({
         Otro
       </button>
       {show ? (
-        <DialogForm
-          handleSubmit={(event) => handleSubmit(event, enviarDGIIAC_Rechazo)}
-        />
+        <DialogForm handleSubmit={(event) => handleSubmit(event, fn)} />
       ) : (
         <></>
       )}

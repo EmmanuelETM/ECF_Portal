@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { useFetch } from "../../hooks/use-fetch";
 import { Indicator } from "../../components/Indicator";
 
 import {
@@ -25,36 +26,63 @@ import { formatMonto } from "../../lib/utils";
 
 import SkeletonPage from "../SkeletonPage";
 import { Title } from "../../components/Title";
-import { getIndicadoresEmitidos } from "../../api/emitidos";
 
 export default function IndicadoresEmitidosPage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const { resumen, porTipoDeComprobante } = data;
 
+  const authFetch = useFetch();
+
+  // Memoize getIndicadoresEmitidos so useEffect won't re-run unnecessarily
+  const getIndicadoresEmitidos = useCallback(
+    async (desde, hasta) => {
+      const params = new URLSearchParams();
+
+      if (desde) params.append("FechaEmisionDesde", desde);
+      if (hasta) params.append("FechaEmisionHasta", hasta);
+
+      const query = params.toString();
+      const url = `/emitidos/indicadores${query ? `?${query}` : ""}`;
+
+      const response = await authFetch(url);
+      return response.json();
+    },
+    [authFetch]
+  );
+
   useEffect(() => {
-    const fetchData = () => {
+    const fetchData = async () => {
       setLoading(true);
-      getIndicadoresEmitidos("2000-01-01", getToday())
-        .then((data) => {
-          setData(data);
-          setLoading(false);
-        })
-        .catch((err) => console.log("Error fetching: ", err));
+      try {
+        const data = await getIndicadoresEmitidos("2000-01-01", getToday());
+        setData(data);
+      } catch (err) {
+        console.error("Error fetching:", err);
+      } finally {
+        setLoading(false);
+      }
     };
+
     fetchData();
-  }, []);
+  }, [getIndicadoresEmitidos]);
 
   const handleSelect = async (fn) => {
     const { from, to } = fn();
-    let result;
     setLoading(true);
 
-    if (from && to) result = await getIndicadoresEmitidos(from, to);
-    else result = await getIndicadoresEmitidos();
+    try {
+      const result =
+        from && to
+          ? await getIndicadoresEmitidos(from, to)
+          : await getIndicadoresEmitidos();
 
-    setData(result);
-    setLoading(false);
+      setData(result);
+    } catch (err) {
+      console.error("Error fetching:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

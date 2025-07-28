@@ -15,12 +15,12 @@ function App() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const ROUTES = {
-    start: <StartPage />,
-    indicadoresEmitidos: <IndicadoresEmitidos />,
-    indicadoresRecibidos: <IndicadoresRecibidos />,
-    consultarEmitidos: <ConsultarEmitidosPage />,
-    consultarRecibidos: <ConsultarRecibidosPage />,
-    config: <ConfigPage />,
+    start: () => <StartPage />,
+    indicadoresEmitidos: () => <IndicadoresEmitidos />,
+    indicadoresRecibidos: () => <IndicadoresRecibidos />,
+    consultarEmitidos: () => <ConsultarEmitidosPage />,
+    consultarRecibidos: () => <ConsultarRecibidosPage />,
+    config: () => <ConfigPage />,
   };
 
   //hash navigation
@@ -30,7 +30,13 @@ function App() {
       setRoute(hash || "start");
     };
 
-    handleHashChange();
+    const storedHash = localStorage.getItem("lastHash");
+    if (storedHash) {
+      setRoute(storedHash);
+      location.hash = storedHash;
+    } else {
+      handleHashChange();
+    }
 
     window.addEventListener("hashchange", handleHashChange);
 
@@ -40,6 +46,7 @@ function App() {
   const navigate = (newRoute) => {
     setRoute(newRoute);
     location.hash = newRoute;
+    localStorage.setItem("lastHash", newRoute);
   };
 
   return (
@@ -56,7 +63,7 @@ function App() {
             setSidebarCollapsed={setSidebarCollapsed}
           />
           <main className="flex-1 min-w-0 px-8 pt-4 mt-4 overflow-y-auto">
-            {ROUTES[route] ?? <StartPage />}
+            {(ROUTES[route] || ROUTES.start)()}
           </main>
         </div>
       </div>

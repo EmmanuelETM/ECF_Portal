@@ -9,6 +9,8 @@ export function AuthProvider({ children }) {
     const tokenFromUrl = urlParams.get("token");
     const tokenFromStorage = localStorage.getItem("token");
 
+    console.log("provider mounted");
+
     if (tokenFromUrl && tokenFromUrl.length > 1) {
       localStorage.setItem("token", tokenFromUrl);
       setToken(tokenFromUrl);
@@ -17,12 +19,18 @@ export function AuthProvider({ children }) {
     } else if (tokenFromStorage && tokenFromStorage.length > 1) {
       setToken(tokenFromStorage);
     } else {
-      window.location.href = "https://summasoft.do/acceder/?app=fe";
+      logout();
     }
   }, []);
 
+  const logout = () => {
+    setToken(null);
+    localStorage.removeItem("token");
+    window.location.href = "https://summasoft.do/acceder/?app=fe";
+  };
+
   return (
-    <AuthContext.Provider value={{ token, setToken }}>
+    <AuthContext.Provider value={{ token, setToken, logout }}>
       {children}
     </AuthContext.Provider>
   );

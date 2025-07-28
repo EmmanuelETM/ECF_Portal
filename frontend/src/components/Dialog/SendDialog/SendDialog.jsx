@@ -1,16 +1,8 @@
 import { useRef, useState } from "react";
+import { useFetch } from "../../../hooks/use-fetch";
 import { Send } from "lucide-react";
 import { DialogTitle } from "../components/DialogTitle";
 import { DialogBreadcrumb } from "../components/DialogBreadCrumb";
-
-import {
-  enviarClienteAC_Aceptacion,
-  enviarClienteAC_Rechazo,
-  enviarDGIIAC_Aceptacion,
-  enviarDGIIAC_Rechazo,
-} from "../../../api/envio";
-
-import { consultarDGII } from "../../../api/consulta";
 
 import { Menu } from "./components/Menu";
 import { Aprobacion } from "./components/Aprobacion";
@@ -24,6 +16,8 @@ export function SendDialog({ archivo, view }) {
   const [show, setShow] = useState(false);
   const [pageStack, setPageStack] = useState(["menu"]);
   const currentPage = pageStack[pageStack.length - 1];
+
+  const authFetch = useFetch();
 
   //Navigation
   const goTo = (page) =>
@@ -56,19 +50,67 @@ export function SendDialog({ archivo, view }) {
     return names[page] || page;
   };
 
+  async function consultarDGII(ecf, tipo) {
+    const endpoint = `/${tipo}/consulta/qr/${ecf}`;
+    const response = await authFetch(endpoint);
+    const text = await response.text();
+
+    if (!response.ok) {
+      return false;
+    }
+
+    window.open(text, "_blank", "noopener,noreferrer");
+    return true;
+  }
+
   const handleConsultar = async () => {
     const ecf = archivo.replace(/\.xml$/, "");
-    let tipo;
-
-    if (view === "emision") tipo = "emitidos";
-    else tipo = "recibidos";
-
+    const tipo = view === "emision" ? "emitidos" : "recibidos";
     const found = await consultarDGII(ecf, tipo);
     if (!found) {
       console.log("ECF no encontrado");
     }
   };
 
+  async function postRequest(url, body = null) {
+    const options = {
+      method: "POST",
+    };
+
+    if (body) {
+      options.body = JSON.stringify(body);
+    }
+
+    return authFetch(url, options);
+  }
+
+  // DGII Endpoints
+
+  async function enviarDGIIAC_Aceptacion(ecf) {
+    await postRequest(`/envio/dgii/ac/${ecf}`, {
+      Estado: 1,
+      MotivoRechazo: "",
+    });
+  }
+
+  async function enviarDGIIAC_Rechazo(ecf, MotivoRechazo) {
+    await postRequest(`/envio/dgii/ac/${ecf}`, { Estado: 2, MotivoRechazo });
+  }
+
+  //Cliente Endpoints
+
+  async function enviarClienteAC_Aceptacion(ecf) {
+    await postRequest(`/envio/cliente/ac/${ecf}`, {
+      Estado: 1,
+      MotivoRechazo: "",
+    });
+  }
+
+  async function enviarClienteAC_Rechazo(ecf, MotivoRechazo) {
+    await postRequest(`/envio/cliente/ac/${ecf}`, { Estado: 2, MotivoRechazo });
+  }
+
+  // Handlers
   const handleDgiiAceptar = async () => {
     const ecf = archivo.replace(/\.xml$/, "");
     await enviarDGIIAC_Aceptacion(ecf);
@@ -139,6 +181,7 @@ export function SendDialog({ archivo, view }) {
             {currentPage === "dgiiRechazo" && (
               <DGIIRechazo
                 handleDgiiRechazo={handleDgiiRechazo}
+                fn={enviarDGIIAC_Rechazo}
                 handleSubmit={handleSubmit}
                 setShow={setShow}
                 show={show}
@@ -155,6 +198,7 @@ export function SendDialog({ archivo, view }) {
             {currentPage === "clienteRechazo" && (
               <ClienteRechazo
                 handleClienteRechazo={handleClienteRechazo}
+                fn={enviarClienteAC_Rechazo}
                 handleSubmit={handleSubmit}
                 setShow={setShow}
                 show={show}

@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import { ReceiptText, Download, FileText } from "lucide-react";
-import { showPDF, showXml } from "../../lib/files";
+import { useFetch } from "../../hooks/use-fetch";
 import { formatXml, highlightXML } from "../../lib/utils";
 import { download } from "../../lib/download";
 import { Button } from "../Button";
@@ -15,23 +15,47 @@ export function XMLDialog({ archivo, view }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
+  const authFetch = useFetch();
+
   useEffect(() => {
-    if (open) {
+    if (!open) return;
+
+    const fetchLogs = async () => {
       setLoading(true);
       setError(false);
-      showXml(archivo, view)
-        .then((file) => {
-          setFile(file);
-          setLoading(false);
-          setError(false);
-        })
-        .catch((err) => {
-          setError(true);
-          setLoading(false);
-          console.error("Failed to fetch xml: ", err);
-        });
-    }
-  }, [open, archivo, view]);
+
+      try {
+        const filePath = `/${view}/ecf/${archivo}`;
+        const response = await authFetch(filePath);
+        if (!response.ok) throw new Error("Archivo no Encontrado");
+
+        const txt = await response.text();
+        setFile(txt);
+        setError(false);
+      } catch (err) {
+        console.error("Error fetching logs: ", err);
+        setError(true);
+        setFile("");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLogs();
+  }, [open, archivo, view, authFetch]);
+
+  const showPDF = async (doc, folder) => {
+    const filePath = `/${folder}/ecf/${doc}?ContentType=application/pdf`;
+    const response = await authFetch(filePath);
+
+    if (!response.ok) throw new Error("Error al obtener PDF");
+
+    const blob = await response.blob();
+    const pdfUrl = URL.createObjectURL(blob);
+    window.open(pdfUrl);
+
+    setTimeout(() => URL.revokeObjectURL(pdfUrl), 10000);
+  };
 
   const openDialog = () => {
     dialogRef.current?.showModal();

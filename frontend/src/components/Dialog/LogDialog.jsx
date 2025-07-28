@@ -1,8 +1,8 @@
 import { useRef, useState, useEffect } from "react";
+import { useFetch } from "../../hooks/use-fetch";
 import { File } from "lucide-react";
 import { Download } from "lucide-react";
 import { DialogTitle } from "./components/DialogTitle";
-import { showLogs } from "../../lib/files";
 import { Loading } from "../Loading";
 import { Button } from "../Button";
 import { download } from "../../lib/download";
@@ -15,23 +15,36 @@ export function LogDialog({ archivo }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
+  const authFetch = useFetch();
+
   useEffect(() => {
-    if (open) {
+    if (!open) return;
+
+    const fetchLogs = async () => {
       setLoading(true);
       setError(false);
-      showLogs(archivo)
-        .then((data) => {
-          setFile(data);
-          setError(false);
-        })
-        .catch((err) => {
-          console.error("Error fetching logs: ", err);
-          setError(true);
-          setFile("");
-        })
-        .finally(() => setLoading(false));
-    }
-  }, [open, archivo]);
+
+      try {
+        const name = archivo.replace(/\.xml$/, ".log");
+        const filePath = `/respuestas/ecf/${name}`;
+
+        const response = await authFetch(filePath);
+        if (!response.ok) throw new Error("Archivo no Encontrado");
+
+        const txt = await response.text();
+        setFile(txt);
+        setError(false);
+      } catch (err) {
+        console.error("Error fetching logs: ", err);
+        setError(true);
+        setFile("");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLogs();
+  }, [open, archivo, authFetch]);
 
   const openDialog = () => {
     dialogRef.current?.showModal();

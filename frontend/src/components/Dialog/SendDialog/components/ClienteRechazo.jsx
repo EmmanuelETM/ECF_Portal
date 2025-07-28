@@ -1,8 +1,8 @@
-import { enviarClienteAC_Rechazo } from "../../../../api/envio";
 import { DialogForm } from "../../components/DialogForm";
 
 export function ClienteRechazo({
   handleClienteRechazo,
+  fn,
   setShow,
   show,
   handleSubmit,
@@ -35,9 +35,7 @@ export function ClienteRechazo({
         Otros
       </button>
       {show ? (
-        <DialogForm
-          handleSubmit={(event) => handleSubmit(event, enviarClienteAC_Rechazo)}
-        />
+        <DialogForm handleSubmit={(event) => handleSubmit(event, fn)} />
       ) : (
         <></>
       )}
