@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Sidebar } from "./components/Sidebar/Sidebar";
-import { Navbar } from "./components/Navbar";
+import { Header } from "./components/Header";
 
 import StartPage from "./pages/StartPage";
 import ConfigPage from "./pages/ConfiguracionPage";
@@ -51,7 +51,7 @@ function App() {
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
-      <Navbar setRoute={navigate} setSidebarOpen={setSidebarOpen} />
+      <Header setRoute={navigate} setSidebarOpen={setSidebarOpen} />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar
           route={route}

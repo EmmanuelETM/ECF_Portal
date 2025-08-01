@@ -24,7 +24,7 @@ import {
 
 import { formatMonto } from "../../lib/utils";
 
-import SkeletonPage from "../SkeletonPage";
+import SkeletonPage from "../../components/Skeleton/IndicadoresSkeleton";
 import { Title } from "../../components/Title";
 
 export default function IndicadoresEmitidosPage() {

@@ -1,11 +1,12 @@
 import { useConfig } from "../hooks/use-config";
+import StartSkeleton from "../components/Skeleton/StartSkeleton";
 
 export default function StartPage() {
   const { Emisor, loading } = useConfig();
 
-  if (loading) return <h1>Loading in this bih</h1>;
-
-  return (
+  return loading ? (
+    <StartSkeleton />
+  ) : (
     <>
       <h1 className="font-semibold text-lg">{Emisor.RazonSocial}</h1>
       <p className="pt-2">

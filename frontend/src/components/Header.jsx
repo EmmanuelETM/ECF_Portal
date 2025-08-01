@@ -3,15 +3,15 @@ import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../hooks/use-auth";
 import { useConfig } from "../hooks/use-config";
 
-export function Navbar({ setRoute, setSidebarOpen }) {
+export function Header({ setRoute, setSidebarOpen }) {
   const { Ambiente } = useConfig();
 
   return (
-    <div className="bg-green-600">
+    <header className="bg-green-600">
       <div className="flex flex-col">
         <div className="w-full border-b-2 border-gray-200">
           <div className="h-16 flex items-center justify-between px-4 mx-auto bg-green-600">
-            <div className="flex items-center gap-3 text-3xl font-bold text-white mr-2">
+            <div className="flex items-center gap-3 text-2xl sm:text-3xl font-bold text-white mr-2">
               <button
                 className="sm:hidden pt-1 cursor-pointer"
                 onClick={() => setSidebarOpen(true)}
@@ -26,8 +26,8 @@ export function Navbar({ setRoute, setSidebarOpen }) {
               </button>
             </div>
 
-            {Ambiente === "taTest" && (
-              <div className="px-1 mt-1 text-xs font-semibold rounded-md bg-amber-400 text-green-900 border border-amber-500">
+            {Ambiente && Ambiente === "taTest" && (
+              <div className="px-1 mt-1 text-xs cursor-default select-none font-semibold rounded-md bg-amber-400 text-green-900 border border-amber-500">
                 Test e-CF
               </div>
             )}
@@ -38,7 +38,7 @@ export function Navbar({ setRoute, setSidebarOpen }) {
           </div>
         </div>
       </div>
-    </div>
+    </header>
   );
 }
 
@@ -67,7 +67,7 @@ export function DropDown() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setOpen((prev) => !prev)}
-        className="h-9 w-9 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 transition-colors"
+        className="h-8 w-8 sm:h-9 sm:w-9 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 transition-colors"
         aria-label="User menu"
       >
         <LogOut className="text-gray-700 w-5 h-5" />
@@ -80,7 +80,7 @@ export function DropDown() {
         >
           <button
             onClick={handleLogout}
-            className="block w-full px-4 py-2 text-md font-semibold text-left text-gray-700 hover:bg-gray-100 transition-colors"
+            className="block w-full px-4 py-2 text-md font-semibold text-left text-gray-700 hover:bg-gray-200 transition-colors"
             role="menuitem"
           >
             Cerrar sesión

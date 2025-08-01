@@ -67,7 +67,7 @@ export function Sidebar({
         onClick={() => setSidebarOpen(false)}
       />
 
-      <div
+      <nav
         className={`
           fixed sm:static top-0 left-0 h-full z-30 transition-all duration-300 ease-in-out bg-gray-100 border-r border-gray-300
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} sm:translate-x-0
@@ -170,7 +170,7 @@ export function Sidebar({
             }}
           />
         </ul>
-      </div>
+      </nav>
     </>
   );
 }
