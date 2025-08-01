@@ -1,32 +1,39 @@
 import { Menu, LogOut } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../hooks/use-auth";
+import { useConfig } from "../hooks/use-config";
 
 export function Navbar({ setRoute, setSidebarOpen }) {
+  const { Ambiente } = useConfig();
+
   return (
-    <div>
-      <div className="pt-0 pr-0 pb-0 pl-0 mt-0 mr-0 mb-0 ml-0"></div>
-      <div className="bg-green-600">
-        <div className="flex-col flex">
-          <div className="w-full border-b-2 border-gray-200">
-            <div className="bg-green-600 h-16 justify-between items-center mx-auto px-4 flex">
-              <div className="text-3xl font-bold py-4 flex items-center justify-center gap-3">
-                <button
-                  className="sm:hidden cursor-pointer text-white pt-1"
-                  onClick={() => setSidebarOpen(true)}
-                >
-                  <Menu />
-                </button>
-                <button
-                  className="cursor-pointer text-white"
-                  onClick={() => setRoute("start")}
-                >
-                  Portal FE
-                </button>
+    <div className="bg-green-600">
+      <div className="flex flex-col">
+        <div className="w-full border-b-2 border-gray-200">
+          <div className="h-16 flex items-center justify-between px-4 mx-auto bg-green-600">
+            <div className="flex items-center gap-3 text-3xl font-bold text-white mr-2">
+              <button
+                className="sm:hidden pt-1 cursor-pointer"
+                onClick={() => setSidebarOpen(true)}
+              >
+                <Menu />
+              </button>
+              <button
+                className="cursor-pointer"
+                onClick={() => setRoute("start")}
+              >
+                Portal FE
+              </button>
+            </div>
+
+            {Ambiente === "taTest" && (
+              <div className="px-1 mt-1 text-xs font-semibold rounded-md bg-amber-400 text-green-900 border border-amber-500">
+                Test e-CF
               </div>
-              <div className="md:space-x-6 justify-end items-center ml-auto flex space-x-3">
-                <DropDown />
-              </div>
+            )}
+
+            <div className="flex items-center justify-end space-x-3 md:space-x-6 ml-auto">
+              <DropDown />
             </div>
           </div>
         </div>
@@ -35,12 +42,12 @@ export function Navbar({ setRoute, setSidebarOpen }) {
   );
 }
 
-function DropDown() {
+export function DropDown() {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
   const { setToken } = useAuth();
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     setToken(null);
     localStorage.removeItem("token");
     window.open("https://summasoft.do/acceder/?app=fe", "_self");
@@ -52,28 +59,31 @@ function DropDown() {
         setOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
-    <div className="relative inline-block text-left" ref={dropdownRef}>
-      <div className="justify-center items-center flex relative">
-        <button
-          className="cursor-pointer flex items-center justify-center h-9 w-9 pl-1 rounded-full mr-2 bg-gray-300"
-          onClick={() => setOpen(!open)}
-        >
-          <LogOut />
-        </button>
-      </div>
+    <div className="relative" ref={dropdownRef}>
+      <button
+        onClick={() => setOpen((prev) => !prev)}
+        className="h-9 w-9 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 transition-colors"
+        aria-label="User menu"
+      >
+        <LogOut className="text-gray-700 w-5 h-5" />
+      </button>
+
       {open && (
-        <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-50">
+        <div
+          className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50 animate-fade-in"
+          role="menu"
+        >
           <button
-            className="block w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer"
-            onClick={() => handleLogout()}
+            onClick={handleLogout}
+            className="block w-full px-4 py-2 text-md font-semibold text-left text-gray-700 hover:bg-gray-100 transition-colors"
+            role="menuitem"
           >
-            Cerrar Sesion
+            Cerrar sesión
           </button>
         </div>
       )}
