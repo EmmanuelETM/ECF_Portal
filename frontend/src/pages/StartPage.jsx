@@ -1,49 +1,24 @@
-import { useEffect, useState } from "react";
-import { useFetch } from "../hooks/use-fetch";
-import { useAuth } from "../hooks/use-auth";
+import { useConfig } from "../hooks/use-config";
 
 export default function StartPage() {
-  const [data, setData] = useState({
-    Correo: "",
-    Direccion: "",
-    RNC: "",
-    RazonSocial: "",
-    Telefono: "",
-  });
+  const { Emisor, loading } = useConfig();
 
-  const authFetch = useFetch();
-  const { token } = useAuth();
-
-  useEffect(() => {
-    if (!token) return;
-
-    async function fetchConfiguracion() {
-      try {
-        const response = await authFetch("configuracion");
-        const data = await response.json();
-        setData({ ...(data?.EMISOR || {}) });
-      } catch (err) {
-        console.error("Error al obtener configuración:", err);
-      }
-    }
-
-    fetchConfiguracion();
-  }, [authFetch, token]);
+  if (loading) return <h1>Loading in this bih</h1>;
 
   return (
     <>
-      <h1 className="font-semibold text-lg">{data.RazonSocial}</h1>
+      <h1 className="font-semibold text-lg">{Emisor.RazonSocial}</h1>
       <p className="pt-2">
-        <span className="font-semibold">RNC</span>: {data.RNC}
+        <span className="font-semibold">RNC</span>: {Emisor.RNC}
       </p>
       <p className="pt-2">
-        <span className="font-semibold">Correo</span>: {data.Correo}
+        <span className="font-semibold">Correo</span>: {Emisor.Correo}
       </p>
       <p className="pt-2">
-        <span className="font-semibold">Direccion</span>: {data.Direccion}
+        <span className="font-semibold">Direccion</span>: {Emisor.Direccion}
       </p>
       <p className="pt-2">
-        <span className="font-semibold">Telefono</span>: {data.Telefono}
+        <span className="font-semibold">Telefono</span>: {Emisor.Telefono}
       </p>
     </>
   );

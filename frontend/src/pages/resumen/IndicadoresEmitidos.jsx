@@ -55,7 +55,8 @@ export default function IndicadoresEmitidosPage() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const data = await getIndicadoresEmitidos("2000-01-01", getToday());
+        const { from, to } = Today();
+        const data = await getIndicadoresEmitidos(from, to);
         setData(data);
       } catch (err) {
         console.error("Error fetching:", err);

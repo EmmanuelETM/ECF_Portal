@@ -52,9 +52,10 @@ export default function IndicadoresEmitidosPage() {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
-        const data = await getIndicadoresRecibidos("2000-01-01", getToday());
+        const { from, to } = Today();
+        const data = await getIndicadoresRecibidos(from, to);
         setData(data);
       } catch (err) {
         console.error("Error fetching:", err);

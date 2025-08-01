@@ -68,7 +68,7 @@ export function SendDialog({ archivo, view }) {
     const tipo = view === "emision" ? "emitidos" : "recibidos";
     const found = await consultarDGII(ecf, tipo);
     if (!found) {
-      console.log("ECF no encontrado");
+      // console.log("ECF no encontrado");
     }
   };
 

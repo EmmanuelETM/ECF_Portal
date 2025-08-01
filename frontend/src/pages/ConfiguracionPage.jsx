@@ -28,8 +28,6 @@ export default function ConfigPage() {
         const response = await authFetch("/configuracion");
         const data = await response.json();
 
-        console.log(data);
-
         const EMISION = data?.EMISION || {};
         const RECEPCION = data?.RECEPCION || {};
 

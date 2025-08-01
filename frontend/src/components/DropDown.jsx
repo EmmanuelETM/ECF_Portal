@@ -4,7 +4,7 @@ import { CalendarArrowDown } from "lucide-react";
 
 export function DropdownButton({ options = [], onSelect }) {
   const [open, setOpen] = useState(false);
-  const [text, setText] = useState("Todos");
+  const [text, setText] = useState("Hoy");
   const dropdownRef = useRef(null);
 
   const handleClick = async (fn, label) => {

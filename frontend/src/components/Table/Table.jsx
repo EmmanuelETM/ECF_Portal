@@ -31,7 +31,6 @@ export function Table({
 
   return (
     <div className="mb-10">
-      {/* Scrollable Table Wrapper */}
       <div className="overflow-x-auto rounded-xl border-spacing-0">
         <table className="w-full text-center min-w-max">
           <thead>
@@ -99,7 +98,7 @@ export function Table({
                     colSpan={8}
                     className="text-center text-lg font-semibold py-4 bg-gray-200"
                   >
-                    No data.
+                    No hay datos para mostrar
                   </td>
                 </tr>
               )}

@@ -9,8 +9,6 @@ export function AuthProvider({ children }) {
     const tokenFromUrl = urlParams.get("token");
     const tokenFromStorage = localStorage.getItem("token");
 
-    console.log("provider mounted");
-
     if (tokenFromUrl && tokenFromUrl.length > 1) {
       localStorage.setItem("token", tokenFromUrl);
       setToken(tokenFromUrl);
