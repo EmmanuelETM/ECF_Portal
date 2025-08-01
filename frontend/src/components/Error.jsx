@@ -1,6 +1,4 @@
-// ErrorMessage.tsx
-import { ReactNode } from "react";
-import { AlertCircle } from "lucide-react"; // or any icon library
+import { AlertCircle } from "lucide-react";
 
 const bgColors = {
   error: "bg-red-100 text-red-800 border-red-300",
@@ -16,7 +14,7 @@ export function ErrorMessage({
 }) {
   return (
     <div
-      className={`flex items-center justify-between border-2 gap-4 p-6 m-6 rounded-lg text-base font-medium ${bgColors[type]}`}
+      className={`flex items-center justify-between border-2 gap-4 p-6 my-6 rounded-lg text-base font-medium ${bgColors[type]}`}
     >
       <div className="flex items-center">
         {icon}

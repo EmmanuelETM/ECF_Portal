@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 import { DropdownButton } from "../../components/DropDown";
+import { ErrorMessage } from "../../components/Error";
 
 import {
   getToday,
@@ -30,6 +31,7 @@ import { Title } from "../../components/Title";
 export default function IndicadoresEmitidosPage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const { resumen, porTipoDeComprobante } = data;
 
   const authFetch = useFetch();
@@ -53,11 +55,13 @@ export default function IndicadoresEmitidosPage() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+      setError(null);
       try {
         const { from, to } = Today();
         const data = await getIndicadoresRecibidos(from, to);
         setData(data);
       } catch (err) {
+        setError("No se pudo obtener los indicadores recibidos.");
         console.error("Error fetching:", err);
       } finally {
         setLoading(false);
@@ -70,6 +74,7 @@ export default function IndicadoresEmitidosPage() {
   const handleSelect = async (fn) => {
     const { from, to } = fn();
     setLoading(true);
+    setError(null);
 
     try {
       const result =
@@ -79,6 +84,7 @@ export default function IndicadoresEmitidosPage() {
 
       setData(result);
     } catch (err) {
+      setError("Error al cargar los datos para el rango seleccionado.");
       console.error("Error fetching:", err);
     } finally {
       setLoading(false);
@@ -88,7 +94,7 @@ export default function IndicadoresEmitidosPage() {
   return (
     <>
       <div className="flex justify-between mb-4">
-        <Title text={"Documentos Recibidos"} />
+        <Title text={"Documentos Emitidos"} />
         <DropdownButton
           options={[
             { label: "Hoy", fn: Today },
@@ -105,52 +111,51 @@ export default function IndicadoresEmitidosPage() {
           onSelect={handleSelect}
         />
       </div>
+
+      {error && <ErrorMessage message={error} type="error" />}
+
       {loading ? (
         <SkeletonPage />
       ) : (
         <>
-          <div className="flex flex-col gap-3">
-            {resumen && (
-              <div className="grid grid-cols-1 sm:grid-cols-3 sm:grid-rows-1 gap-4">
+          {resumen && (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <Indicator
                   value={resumen.Conteo}
-                  title={"Total"}
+                  title="Total"
                   Icon={Calculator}
                 />
                 <Indicator
                   value={resumen.Pendientes}
-                  title={"Pendientes"}
+                  title="Pendientes"
                   Icon={CircleDot}
                 />
                 <Indicator
                   value={resumen.Rechazados}
-                  title={"Rechazados"}
+                  title="Rechazados"
                   Icon={Ban}
                 />
               </div>
-            )}
-          </div>
 
-          <div className="flex flex-col gap-3 mt-4">
-            {resumen && (
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid md:grid-cols-2 gap-4 mt-4">
                 <Indicator
                   value={formatMonto(resumen.Monto)}
-                  title={"Monto Total"}
+                  title="Monto Total"
                   Icon={DollarSign}
                 />
                 <Indicator
                   value={formatMonto(resumen.ITBIS)}
-                  title={"ITBIS"}
+                  title="ITBIS"
                   Icon={CircleDollarSign}
                 />
               </div>
-            )}
-          </div>
+            </>
+          )}
 
-          <div className="flex flex-col gap-3 mt-8">
-            <Title text={"Por Tipo de Comprobantes"} />
-            {porTipoDeComprobante && (
+          {porTipoDeComprobante && (
+            <div className="flex flex-col gap-3 mt-8">
+              <Title text={"Por Tipo de Comprobantes"} />
               <div className="grid grid-cols-2 xl:grid-cols-5 gap-4">
                 {porTipoDeComprobante.map((item, index) => (
                   <Indicator
@@ -161,8 +166,8 @@ export default function IndicadoresEmitidosPage() {
                   />
                 ))}
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </>
       )}
     </>

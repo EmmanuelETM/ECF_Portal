@@ -67,7 +67,7 @@ export function Table({
             <tbody>
               <tr>
                 <td colSpan={8} className="bg-gray-100">
-                  <Loading text={"data"} />
+                  <Loading text={"datos"} />
                 </td>
               </tr>
             </tbody>

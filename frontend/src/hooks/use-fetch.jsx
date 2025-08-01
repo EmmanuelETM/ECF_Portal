@@ -14,17 +14,17 @@ export const useFetch = () => {
           Authorization: token ? `Bearer ${token}` : undefined,
         };
 
-        // const endpoint = new URL(`/fe/api${url}`, API_SERVER);
+        const endpoint = new URL(`/fe/api${url}`, API_SERVER);
 
-        // const response = await fetch(endpoint, {
-        //   ...options,
-        //   headers,
-        // });
-
-        const response = await fetch(`/api${url}`, {
+        const response = await fetch(endpoint, {
           ...options,
           headers,
         });
+
+        // const response = await fetch(`/api${url}`, {
+        //   ...options,
+        //   headers,
+        // });
 
         if (response.status === 401) {
           logout();
